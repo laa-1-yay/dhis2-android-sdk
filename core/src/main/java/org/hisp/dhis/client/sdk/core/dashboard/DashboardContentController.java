@@ -37,4 +37,5 @@ public interface DashboardContentController extends IdentifiableController<Dashb
 
     void syncDashboardContent(SyncStrategy syncStrategy) throws ApiException;
 
+    String getReportTableDataByUid(String uid) throws ApiException;
 }

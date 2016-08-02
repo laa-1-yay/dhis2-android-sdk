@@ -45,6 +45,12 @@ import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.utils.Logger;
 import org.joda.time.DateTime;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -202,4 +208,10 @@ public final class DashboardContentControllerImpl extends AbsDataController<Dash
                 throw new IllegalArgumentException("Unsupported DashboardContent type");
         }
     }
+
+    @Override
+    public String getReportTableDataByUid(String uid) throws ApiException {
+        return "";
+    }
+
 }
