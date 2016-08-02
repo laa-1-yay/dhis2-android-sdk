@@ -211,7 +211,34 @@ public final class DashboardContentControllerImpl extends AbsDataController<Dash
 
     @Override
     public String getReportTableDataByUid(String uid) throws ApiException {
-        return "";
+        byte[] response = new byte[0];
+        try {
+            response = dashboardApiClient.getReportTableDataByUid(uid).bytes();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readInputStream(response);
+    }
+
+    static String readInputStream(byte[] in) {
+        StringBuilder builder = new StringBuilder();
+        try {
+            BufferedReader bufferedStream
+                    = new BufferedReader(new InputStreamReader(new ByteArrayInputStream(in)));
+            try {
+                String line;
+                while ((line = bufferedStream.readLine()) != null) {
+                    builder.append(line);
+                    builder.append('\n');
+                }
+                return builder.toString();
+            } finally {
+                bufferedStream.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return builder.toString();
     }
 
 }
