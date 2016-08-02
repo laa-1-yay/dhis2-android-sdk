@@ -49,4 +49,6 @@ public interface DashboardContentInteractor {
     Observable<List<DashboardContent>> list();
 
     Observable<List<DashboardContent>> list(Set<String> types);
+
+    Observable<String> getReportTableData(String uId);
 }

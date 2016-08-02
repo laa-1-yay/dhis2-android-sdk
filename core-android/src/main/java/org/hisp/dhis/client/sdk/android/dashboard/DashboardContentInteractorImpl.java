@@ -105,4 +105,15 @@ public class DashboardContentInteractorImpl implements DashboardContentInteracto
             }
         });
     }
+
+    @Override
+    public Observable<String> getReportTableData(final String uId) {
+        return Observable.create(new DefaultOnSubscribe<String>() {
+            @Override
+            public String call() {
+                return dashboardContentController.getReportTableDataByUid(uId);
+            }
+        });
+    }
+
 }
