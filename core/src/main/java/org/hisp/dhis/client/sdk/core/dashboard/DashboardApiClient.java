@@ -38,6 +38,8 @@ import org.joda.time.DateTime;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
+
 // TODO build relationships between (dashbord and dashboard items for example) models.
 // TODO Handle field filtering and selection.
 // TODO do not return null collections.
@@ -81,5 +83,5 @@ public interface DashboardApiClient {
 
     List<DashboardContent> getBaseResources(Map<String, String> queryParams);
 
-    Response getReportTableDataByUid(String uid);
+    ResponseBody getReportTableDataByUid(String uid);
 }

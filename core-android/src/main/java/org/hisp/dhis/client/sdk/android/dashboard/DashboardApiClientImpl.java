@@ -45,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
+
 import static org.hisp.dhis.client.sdk.android.api.network.NetworkUtils.call;
 import static org.hisp.dhis.client.sdk.android.api.network.NetworkUtils.unwrap;
 
@@ -223,7 +225,7 @@ public class DashboardApiClientImpl implements DashboardApiClient {
 
     @Override
     @NonNull
-    public Response getReportTableDataByUid(String uid) {
-        return null;
+    public ResponseBody getReportTableDataByUid(String uid) {
+        return call(dashboardApiClientRetrofit.getReportTableData(uid));
     }
 }
