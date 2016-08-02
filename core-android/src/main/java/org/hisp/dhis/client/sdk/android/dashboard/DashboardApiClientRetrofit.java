@@ -28,6 +28,8 @@
 
 package org.hisp.dhis.client.sdk.android.dashboard;
 
+
+import org.hisp.dhis.client.sdk.core.common.network.Response;
 import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;
@@ -35,8 +37,8 @@ import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -111,8 +113,8 @@ public interface DashboardApiClientRetrofit {
                                                                       queryParams);
 
     @Headers("Accept: application/text")
-    @GET("/reportTables/{id}/data.html")
-    Call<Response> getReportTableData(@Path("id") String id);
+    @GET("reportTables/{id}/data.html")
+    Call<ResponseBody> getReportTableData(@Path("id") String id);
 
     @GET("eventReports?paging=false")
     Call<Map<String, List<DashboardContent>>> getEventReports(@QueryMap Map<String, String>
