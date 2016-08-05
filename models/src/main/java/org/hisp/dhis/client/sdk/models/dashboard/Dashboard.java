@@ -32,12 +32,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.hisp.dhis.client.sdk.models.common.Access;
 import org.hisp.dhis.client.sdk.models.common.base.BaseIdentifiableObject;
-import org.hisp.dhis.client.sdk.models.common.state.State;
-import org.joda.time.DateTime;
 
 import java.util.List;
+
+import static org.hisp.dhis.client.sdk.utils.Preconditions.isNull;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -60,4 +59,21 @@ public final class Dashboard extends BaseIdentifiableObject {
     public void setDashboardItems(List<DashboardItem> dashboardItems) {
         this.dashboardItems = dashboardItems;
     }
+
+    /**
+     * This method will change the name of dashboard along with the State.
+     * <p/>
+     * If the current state of model is State.TO_DELETE or State.TO_POST,
+     * state won't be changed. Otherwise, it will be set to State.TO_UPDATE.
+     *
+     * @param newName New name for dashboard.
+     */
+    @JsonIgnore
+    public void updateDashboard(String newName) {
+        setName(newName);
+        setDisplayName(newName);
+        // TODO Verify
+        // To be saved with interactor's save method
+    }
+
 }
