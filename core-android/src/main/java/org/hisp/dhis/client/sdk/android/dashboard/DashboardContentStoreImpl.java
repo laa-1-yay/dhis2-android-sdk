@@ -60,24 +60,33 @@ public final class DashboardContentStoreImpl extends AbsIdentifiableObjectDataSt
     @Override
     public List<DashboardContent> queryByTypes(Set<String> types) {
 //        CombinedCondition generalCondition = CombinedCondition.begin(
-//                Condition.column(DashboardContent_Flow_Table.TYPE).isNotNull());
+//                Condition.column(DashboardContentFlow_Table.TYPE).isNotNull());
 //        CombinedCondition columnConditions = null;
 //        for (String type : types) {
 //            if (columnConditions == null) {
 //                columnConditions = CombinedCondition
-//                        .begin(Condition.column(DashboardContent_Flow_Table.TYPE).is(type));
+//                        .begin(Condition.column(DashboardContentFlow_Table.TYPE).is(type));
 //            } else {
 //                columnConditions = columnConditions
-//                        .or(Condition.column(DashboardContent_Flow_Table.TYPE).is(type));
+//                        .or(Condition.column(DashboardContentFlow_Table.TYPE).is(type));
 //            }
 //        }
 //        generalCondition.and(columnConditions);
 //
-//        List<DashboardContent_Flow> resources = new Select()
+//        List<DashboardContentFlow> resources = new Select()
 //                .from(DashboardContent_Flow.class)
 //                .where(generalCondition)
 //                .queryList();
 //        return getMapper().mapToModels(resources);
-        return null;
+//        return null;
+
+        // TODO check if written code is correct and substitute to above Combined Condition code
+        List<DashboardContentFlow> resources = new Select()
+                .from(DashboardContentFlow.class)
+                .where(DashboardContentFlow_Table.type.isNotNull())
+                .and(DashboardContentFlow_Table.type.in(types))
+                .queryList();
+        return getMapper().mapToModels(resources);
+
     }
 }
