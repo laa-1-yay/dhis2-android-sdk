@@ -48,6 +48,8 @@ import org.hisp.dhis.client.sdk.android.dataelement.DataElementInteractor;
 import org.hisp.dhis.client.sdk.android.dataelement.DataElementInteractorImpl;
 import org.hisp.dhis.client.sdk.android.event.EventInteractor;
 import org.hisp.dhis.client.sdk.android.event.EventInteractorImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationInteractor;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationInteractorImpl;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetInteractor;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetInteractorImpl;
 import org.hisp.dhis.client.sdk.android.organisationunit.OrganisationUnitInteractor;
@@ -88,7 +90,6 @@ import org.hisp.dhis.client.sdk.core.common.persistence.PersistenceModule;
 import org.hisp.dhis.client.sdk.core.common.preferences.PreferencesModule;
 import org.hisp.dhis.client.sdk.core.common.services.ServicesModule;
 import org.hisp.dhis.client.sdk.core.common.services.ServicesModuleImpl;
-import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
 import org.hisp.dhis.client.sdk.utils.Logger;
 
 import okhttp3.OkHttpClient;
@@ -133,6 +134,7 @@ public class D2 {
     private final DashboardItemInteractor dashboardItemInteractor;
     private final DashboardElementInteractor dashboardElementInteractor;
     private final DashboardContentInteractor dashboardContentInteractor;
+    private final InterpretationInteractor interpretationInteractor;
     private final ProgramStageDataElementInteractor programStageDataElementInteractor;
     private final DataElementInteractor dataElementInteractor;
     private final OptionSetInteractor optionSetInteractor;
@@ -165,6 +167,7 @@ public class D2 {
             dashboardItemInteractor = null;
             dashboardElementInteractor = null;
             dashboardContentInteractor = null;
+            interpretationInteractor = null;
             programStageDataElementInteractor = null;
             dataElementInteractor = null;
             programRuleInteractor = null;
@@ -250,6 +253,10 @@ public class D2 {
         dashboardContentInteractor = new DashboardContentInteractorImpl(
                 servicesModule.getDashboardContentService(),
                 controllersModule.getDashboardContentController());
+
+        interpretationInteractor = new InterpretationInteractorImpl(
+                servicesModule.getInterpretationService(),
+                controllersModule.getInterpretationController());
 
         dataElementInteractor = new DataElementInteractorImpl(
                 servicesModule.getDataElementService(),
@@ -439,6 +446,10 @@ public class D2 {
 
     public static DashboardContentInteractor dashboardContent() {
         return configuredInstance().dashboardContentInteractor;
+    }
+
+    public static InterpretationInteractor interpretations() {
+        return configuredInstance().interpretationInteractor;
     }
 
     public static TrackedEntityDataValueInteractor trackedEntityDataValues() {
