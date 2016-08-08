@@ -73,6 +73,8 @@ public interface DhisApi {
     String DASHBOARDS = "dashboards";
     String DASHBOARD_ITEMS = "dashboardItems";
 
+    String INTERPRETATIONS = "interpretations";
+
     String DASHBOARD_CONTENT_CHARTS = "charts";
     String DASHBOARD_CONTENT_EVENT_CHARTS = "eventCharts";
     String DASHBOARD_CONTENT_MAPS = "maps";
@@ -94,56 +96,6 @@ public interface DhisApi {
     String EVENTS = "events";
     String TRACKED_ENTITY_INSTANCES = "trackedEntityInstances";
     String ENROLLMENTS = "enrollments";
-
-    /////////////////////////////////////////////////////////////////////////
-    // Methods for working with Interpretations
-    /////////////////////////////////////////////////////////////////////////
-
-    @GET("/interpretations/?paging=false")
-    Call<Map<String, List<Interpretation>>> getInterpretations(@QueryMap Map<String, String>
-                                                                       queryMap);
-
-    @GET("/interpretations/{uid}")
-    Call<Interpretation> getInterpretation(@Path("uid") String uId, @QueryMap Map<String, String>
-            queryMap);
-
-    @Headers("Content-Type: text/plain")
-    @POST("/interpretations/chart/{uid}")
-    Call<Response> postChartInterpretation(@Path("uid") String elementUid,
-                                           @Body String interpretationText);
-
-    @Headers("Content-Type: text/plain")
-    @POST("/interpretations/map/{uid}")
-    Call<Response> postMapInterpretation(@Path("uid") String elementUid,
-                                         @Body String interpretationText);
-
-    @Headers("Content-Type: text/plain")
-    @POST("/interpretations/reportTable/{uid}")
-    Call<Response> postReportTableInterpretation(@Path("uid") String elementUid,
-                                                 @Body String interpretationText);
-
-    @Headers("Content-Type: text/plain")
-    @PUT("/interpretations/{uid}")
-    Call<Response> putInterpretationText(@Path("uid") String interpretationUid,
-                                         @Body String interpretationText);
-
-    @DELETE("/interpretations/{uid}")
-    Call<Response> deleteInterpretation(@Path("uid") String interpretationUid);
-
-    @Headers("Content-Type: text/plain")
-    @POST("/interpretations/{interpretationUid}/comments")
-    Call<Response> postInterpretationComment(@Path("interpretationUid") String interpretationUid,
-                                             @Body String commentText);
-
-    @Headers("Content-Type: text/plain")
-    @PUT("/interpretations/{interpretationUid}/comments/{commentUid}")
-    Call<Response> putInterpretationComment(@Path("interpretationUid") String interpretationUid,
-                                            @Path("commentUid") String commentUid,
-                                            @Body String commentText);
-
-    @DELETE("/interpretations/{interpretationUid}/comments/{commentUid}")
-    Call<Response> deleteInterpretationComment(@Path("interpretationUid") String interpretationUid,
-                                               @Path("commentUid") String commentUid);
 
 
     /////////////////////////////////////////////////////////////////////////
