@@ -48,6 +48,10 @@ import org.hisp.dhis.client.sdk.android.dataelement.DataElementInteractor;
 import org.hisp.dhis.client.sdk.android.dataelement.DataElementInteractorImpl;
 import org.hisp.dhis.client.sdk.android.event.EventInteractor;
 import org.hisp.dhis.client.sdk.android.event.EventInteractorImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationCommentInteractor;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationCommentInteractorImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationElementInteractor;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationElementInteractorImpl;
 import org.hisp.dhis.client.sdk.android.interpretation.InterpretationInteractor;
 import org.hisp.dhis.client.sdk.android.interpretation.InterpretationInteractorImpl;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetInteractor;
@@ -135,6 +139,8 @@ public class D2 {
     private final DashboardElementInteractor dashboardElementInteractor;
     private final DashboardContentInteractor dashboardContentInteractor;
     private final InterpretationInteractor interpretationInteractor;
+    private final InterpretationElementInteractor interpretationElementInteractor;
+    private final InterpretationCommentInteractor interpretationCommentInteractor;
     private final ProgramStageDataElementInteractor programStageDataElementInteractor;
     private final DataElementInteractor dataElementInteractor;
     private final OptionSetInteractor optionSetInteractor;
@@ -168,6 +174,8 @@ public class D2 {
             dashboardElementInteractor = null;
             dashboardContentInteractor = null;
             interpretationInteractor = null;
+            interpretationElementInteractor = null;
+            interpretationCommentInteractor = null;
             programStageDataElementInteractor = null;
             dataElementInteractor = null;
             programRuleInteractor = null;
@@ -257,6 +265,12 @@ public class D2 {
         interpretationInteractor = new InterpretationInteractorImpl(
                 servicesModule.getInterpretationService(),
                 controllersModule.getInterpretationController());
+
+        interpretationElementInteractor = new InterpretationElementInteractorImpl(
+                servicesModule.getInterpretationElementService());
+
+        interpretationCommentInteractor = new InterpretationCommentInteractorImpl(
+                servicesModule.getInterpretationCommentService());
 
         dataElementInteractor = new DataElementInteractorImpl(
                 servicesModule.getDataElementService(),
@@ -450,6 +464,14 @@ public class D2 {
 
     public static InterpretationInteractor interpretations() {
         return configuredInstance().interpretationInteractor;
+    }
+
+    public static InterpretationElementInteractor interpretationElements() {
+        return configuredInstance().interpretationElementInteractor;
+    }
+
+    public static InterpretationCommentInteractor interpretationComments() {
+        return configuredInstance().interpretationCommentInteractor;
     }
 
     public static TrackedEntityDataValueInteractor trackedEntityDataValues() {
