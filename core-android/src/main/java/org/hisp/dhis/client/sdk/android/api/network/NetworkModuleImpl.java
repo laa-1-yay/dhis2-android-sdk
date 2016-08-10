@@ -38,6 +38,8 @@ import org.hisp.dhis.client.sdk.android.dataelement.DataElementApiClientImpl;
 import org.hisp.dhis.client.sdk.android.dataelement.DataElementApiClientRetrofit;
 import org.hisp.dhis.client.sdk.android.event.EventApiClientImpl;
 import org.hisp.dhis.client.sdk.android.event.EventApiClientRetrofit;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationApiClientImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationApiClientRetrofit;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetApiClientImpl;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetApiClientRetrofit;
 import org.hisp.dhis.client.sdk.android.organisationunit.OrganisationUnitApiClientImpl;
@@ -73,6 +75,7 @@ import org.hisp.dhis.client.sdk.core.common.preferences.UserPreferences;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardApiClient;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementApiClient;
 import org.hisp.dhis.client.sdk.core.event.EventApiClient;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationApiClient;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetApiClient;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitApiClient;
 import org.hisp.dhis.client.sdk.core.program.ProgramApiClient;
@@ -87,6 +90,7 @@ import org.hisp.dhis.client.sdk.core.systeminfo.SystemInfoApiClient;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeApiClient;
 import org.hisp.dhis.client.sdk.core.user.UserApiClient;
 import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -128,6 +132,7 @@ public class NetworkModuleImpl implements NetworkModule {
     private final UserApiClient userApiClient;
     private final EventApiClient eventApiClient;
     private final DashboardApiClient dashboardApiClient;
+    private final InterpretationApiClient interpretationApiClient;
     private final DataElementApiClient dataElementApiClient;
     private final ProgramStageDataElementApiClient programStageDataElementApiClient;
     private final OptionSetApiClient optionSetApiClient;
@@ -199,6 +204,8 @@ public class NetworkModuleImpl implements NetworkModule {
                 retrofit.create(EventApiClientRetrofit.class));
         dashboardApiClient = new DashboardApiClientImpl(
                 retrofit.create(DashboardApiClientRetrofit.class));
+        interpretationApiClient = new InterpretationApiClientImpl(
+                retrofit.create(InterpretationApiClientRetrofit.class));
         dataElementApiClient = new DataElementApiClientImpl(
                 retrofit.create(DataElementApiClientRetrofit.class));
         programStageDataElementApiClient = new ProgramStageDataElementApiClientImpl(
@@ -247,6 +254,11 @@ public class NetworkModuleImpl implements NetworkModule {
     @Override
     public DashboardApiClient getDashboardApiClient() {
         return dashboardApiClient;
+    }
+
+    @Override
+    public InterpretationApiClient getInterpretationApiClient() {
+        return interpretationApiClient;
     }
 
     @Override
