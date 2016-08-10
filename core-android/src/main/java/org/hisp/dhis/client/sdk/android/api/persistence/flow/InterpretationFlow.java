@@ -32,23 +32,13 @@ import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.ForeignKey;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyAction;
 import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
-import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 
+// TODO Handle Action Properly
 @Table(database = DbDhis.class)
 public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
-
-    @Column(name = "text")
-    String text;
-
-    @Column(name = "type")
-    String type;
-
-    @Column(name = "action")
-    @NotNull
-    org.hisp.dhis.client.sdk.models.common.state.Action action;
 
     @Column
     @ForeignKey(
@@ -60,8 +50,18 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
     UserFlow user;
 
     public InterpretationFlow() {
-        action = org.hisp.dhis.client.sdk.models.common.state.Action.SYNCED;
+//        action = org.hisp.dhis.client.sdk.models.common.state.Action.SYNCED;
     }
+
+    @Column(name = "text")
+    String text;
+
+    @Column(name = "type")
+    String type;
+
+//    @Column(name = "action")
+//    @NotNull
+//    org.hisp.dhis.client.sdk.models.common.state.Action action;
 
     public String getText() {
         return text;
@@ -79,13 +79,13 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
         this.type = type;
     }
 
-    public org.hisp.dhis.client.sdk.models.common.state.Action getAction() {
-        return action;
-    }
-
-    public void setAction(org.hisp.dhis.client.sdk.models.common.state.Action action) {
-        this.action = action;
-    }
+//    public org.hisp.dhis.client.sdk.models.common.state.Action getAction() {
+//        return action;
+//    }
+//
+//    public void setAction(org.hisp.dhis.client.sdk.models.common.state.Action action) {
+//        this.action = action;
+//    }
 
     public UserFlow getUser() {
         return user;
@@ -94,4 +94,5 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
     public void setUser(UserFlow user) {
         this.user = user;
     }
+
 }
