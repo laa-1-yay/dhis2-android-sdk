@@ -35,10 +35,14 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
+import org.hisp.dhis.client.sdk.android.common.AbsMapper;
+import org.hisp.dhis.client.sdk.android.common.Mapper;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 // TODO Handle Action Properly
 @Table(database = DbDhis.class)
 public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
+    public static final Mapper<Interpretation, InterpretationFlow> MAPPER = new InterpretationMapper();
 
     @Column
     @ForeignKey(
@@ -95,4 +99,54 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
         this.user = user;
     }
 
+    private static class InterpretationMapper extends AbsMapper<Interpretation, InterpretationFlow> {
+
+        @Override
+        public InterpretationFlow mapToDatabaseEntity(Interpretation interpretation) {
+            if (interpretation == null) {
+                return null;
+            }
+
+            InterpretationFlow interpretationFlow = new InterpretationFlow();
+            interpretationFlow.setId(interpretation.getId());
+            interpretationFlow.setUId(interpretation.getUId());
+            interpretationFlow.setCreated(interpretation.getCreated());
+            interpretationFlow.setLastUpdated(interpretation.getLastUpdated());
+            interpretationFlow.setAccess(interpretation.getAccess());
+            interpretationFlow.setName(interpretation.getName());
+            interpretationFlow.setDisplayName(interpretation.getDisplayName());
+            interpretationFlow.setText(interpretation.getText());
+            interpretationFlow.setType(interpretation.getType());
+            return interpretationFlow;
+        }
+
+        @Override
+        public Interpretation mapToModel(InterpretationFlow interpretationFlow) {
+            if (interpretationFlow == null) {
+                return null;
+            }
+
+            Interpretation interpretation = new Interpretation();
+            interpretation.setId(interpretationFlow.getId());
+            interpretation.setUId(interpretationFlow.getUId());
+            interpretation.setCreated(interpretationFlow.getCreated());
+            interpretation.setLastUpdated(interpretationFlow.getLastUpdated());
+            interpretation.setAccess(interpretationFlow.getAccess());
+            interpretation.setName(interpretationFlow.getName());
+            interpretation.setDisplayName(interpretationFlow.getDisplayName());
+            interpretation.setText(interpretationFlow.getText());
+            interpretation.setType(interpretationFlow.getType());
+            return interpretation;
+        }
+
+        @Override
+        public Class<Interpretation> getModelTypeClass() {
+            return Interpretation.class;
+        }
+
+        @Override
+        public Class<InterpretationFlow> getDatabaseEntityTypeClass() {
+            return InterpretationFlow.class;
+        }
+    }
 }

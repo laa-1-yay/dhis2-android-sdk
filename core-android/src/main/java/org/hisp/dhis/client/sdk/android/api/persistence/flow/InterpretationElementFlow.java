@@ -36,6 +36,8 @@ import com.raizlabs.android.dbflow.annotation.NotNull;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
+import org.hisp.dhis.client.sdk.android.common.AbsMapper;
+import org.hisp.dhis.client.sdk.android.common.Mapper;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 
 import java.util.ArrayList;
@@ -48,6 +50,8 @@ import java.util.List;
  */
 @Table(database = DbDhis.class)
 public final class InterpretationElementFlow extends BaseIdentifiableObjectFlow {
+    public static final Mapper<InterpretationElement, InterpretationElementFlow> MAPPER =
+            new InterpretationElementMapper();
 
     @Column
     @NotNull
@@ -144,5 +148,55 @@ public final class InterpretationElementFlow extends BaseIdentifiableObjectFlow 
 
     public void setInterpretation(InterpretationFlow interpretation) {
         this.interpretation = interpretation;
+    }
+
+    private static class InterpretationElementMapper
+            extends AbsMapper<InterpretationElement, InterpretationElementFlow> {
+
+        @Override
+        public InterpretationElementFlow mapToDatabaseEntity(InterpretationElement interpretationElement) {
+            if (interpretationElement == null) {
+                return null;
+            }
+
+            InterpretationElementFlow interpretationElementFlow = new InterpretationElementFlow();
+            interpretationElementFlow.setId(interpretationElement.getId());
+            interpretationElementFlow.setUId(interpretationElement.getUId());
+            interpretationElementFlow.setCreated(interpretationElement.getCreated());
+            interpretationElementFlow.setLastUpdated(interpretationElement.getLastUpdated());
+            interpretationElementFlow.setAccess(interpretationElement.getAccess());
+            interpretationElementFlow.setName(interpretationElement.getName());
+            interpretationElementFlow.setDisplayName(interpretationElement.getDisplayName());
+            interpretationElementFlow.setType(interpretationElement.getType());
+            return interpretationElementFlow;
+        }
+
+        @Override
+        public InterpretationElement mapToModel(InterpretationElementFlow interpretationElementFlow) {
+            if (interpretationElementFlow == null) {
+                return null;
+            }
+
+            InterpretationElement interpretationElement = new InterpretationElement();
+            interpretationElement.setId(interpretationElementFlow.getId());
+            interpretationElement.setUId(interpretationElementFlow.getUId());
+            interpretationElement.setCreated(interpretationElementFlow.getCreated());
+            interpretationElement.setLastUpdated(interpretationElementFlow.getLastUpdated());
+            interpretationElement.setAccess(interpretationElementFlow.getAccess());
+            interpretationElement.setName(interpretationElementFlow.getName());
+            interpretationElement.setDisplayName(interpretationElementFlow.getDisplayName());
+            interpretationElement.setType(interpretationElementFlow.getType());
+            return interpretationElement;
+        }
+
+        @Override
+        public Class<InterpretationElement> getModelTypeClass() {
+            return InterpretationElement.class;
+        }
+
+        @Override
+        public Class<InterpretationElementFlow> getDatabaseEntityTypeClass() {
+            return InterpretationElementFlow.class;
+        }
     }
 }
