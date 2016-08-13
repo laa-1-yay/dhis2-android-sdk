@@ -34,14 +34,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import org.hisp.dhis.client.sdk.models.common.base.BaseIdentifiableObject;
 import org.hisp.dhis.client.sdk.models.user.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Interpretation extends BaseIdentifiableObject {
-    public static final String TYPE_CHART = "chart";
-    public static final String TYPE_MAP = "map";
-    public static final String TYPE_REPORT_TABLE = "reportTable";
-    public static final String TYPE_DATA_SET_REPORT = "dataSetReport";
+
+//    public static final String TYPE_CHART = "chart";
+//    public static final String TYPE_MAP = "map";
+//    public static final String TYPE_REPORT_TABLE = "reportTable";
+//    public static final String TYPE_DATA_SET_REPORT = "dataSetReport";
+
+    public static final String TYPE_CHART = "CHART";
+    public static final String TYPE_MAP = "MAP";
+    public static final String TYPE_REPORT_TABLE = "REPORT_TABLE";
+    public static final String TYPE_DATA_SET_REPORT = "DATASET_REPORT";
 
     @JsonProperty("text")
     private String text;
@@ -155,4 +162,5 @@ public class Interpretation extends BaseIdentifiableObject {
     public void setComments(List<InterpretationComment> comments) {
         this.comments = comments;
     }
+
 }
