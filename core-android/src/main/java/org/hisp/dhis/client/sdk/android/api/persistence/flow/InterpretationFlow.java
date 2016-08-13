@@ -39,7 +39,6 @@ import org.hisp.dhis.client.sdk.android.common.AbsMapper;
 import org.hisp.dhis.client.sdk.android.common.Mapper;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
-// TODO Handle Action Properly
 @Table(database = DbDhis.class)
 public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
     public static final Mapper<Interpretation, InterpretationFlow> MAPPER = new InterpretationMapper();
@@ -54,7 +53,6 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
     UserFlow user;
 
     public InterpretationFlow() {
-//        action = org.hisp.dhis.client.sdk.models.common.state.Action.SYNCED;
     }
 
     @Column(name = "text")
@@ -62,10 +60,6 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
 
     @Column(name = "type")
     String type;
-
-//    @Column(name = "action")
-//    @NotNull
-//    org.hisp.dhis.client.sdk.models.common.state.Action action;
 
     public String getText() {
         return text;
@@ -82,14 +76,6 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
     public void setType(String type) {
         this.type = type;
     }
-
-//    public org.hisp.dhis.client.sdk.models.common.state.Action getAction() {
-//        return action;
-//    }
-//
-//    public void setAction(org.hisp.dhis.client.sdk.models.common.state.Action action) {
-//        this.action = action;
-//    }
 
     public UserFlow getUser() {
         return user;
@@ -117,6 +103,8 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
             interpretationFlow.setDisplayName(interpretation.getDisplayName());
             interpretationFlow.setText(interpretation.getText());
             interpretationFlow.setType(interpretation.getType());
+            interpretationFlow.setUser(UserFlow.MAPPER
+                    .mapToDatabaseEntity(interpretation.getUser()));
             return interpretationFlow;
         }
 
@@ -136,6 +124,8 @@ public final class InterpretationFlow extends BaseIdentifiableObjectFlow {
             interpretation.setDisplayName(interpretationFlow.getDisplayName());
             interpretation.setText(interpretationFlow.getText());
             interpretation.setType(interpretationFlow.getType());
+            interpretation.setUser(UserFlow.MAPPER
+                    .mapToModel(interpretationFlow.getUser()));
             return interpretation;
         }
 
