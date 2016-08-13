@@ -61,11 +61,11 @@ public interface DashboardApiClient {
 
     Response putDashboard(Dashboard dashboard);
 
-    Response deleteDashboard(Dashboard dashboard);
+    Response deleteDashboard(String dashboardUId);
 
-    Response deleteDashboardItem(DashboardItem dashboardItem);
+    Response deleteDashboardItem(String dashboardUId, String dashboardItemUId);
 
-    Response deleteDashboardItemContent(DashboardElement dashboardElement);
+    Response deleteDashboardItemContent(String dashboardUId, String dashboardItemUId, String dashboardContentUId);
 
     List<DashboardContent> getBaseCharts(Map<String, String> queryParams);
 
