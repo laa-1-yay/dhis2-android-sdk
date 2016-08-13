@@ -31,5 +31,8 @@ package org.hisp.dhis.client.sdk.core.interpretation;
 import org.hisp.dhis.client.sdk.core.common.persistence.IdentifiableObjectStore;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
+import java.util.List;
+
 public interface InterpretationStore extends IdentifiableObjectStore<Interpretation> {
+    List<Interpretation> query();
 }
