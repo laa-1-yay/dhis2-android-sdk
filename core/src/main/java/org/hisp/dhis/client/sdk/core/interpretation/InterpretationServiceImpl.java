@@ -39,6 +39,8 @@ import org.hisp.dhis.client.sdk.models.user.User;
 import org.hisp.dhis.client.sdk.utils.Preconditions;
 import org.joda.time.DateTime;
 
+import java.util.List;
+
 public class InterpretationServiceImpl implements InterpretationService {
     private final InterpretationStore interpretationStore;
     private final StateStore stateStore;
@@ -116,6 +118,42 @@ public class InterpretationServiceImpl implements InterpretationService {
     }
 
     @Override
+    public List<Interpretation> list() {
+        return stateStore.queryModelsWithActions(Interpretation.class,
+                Action.SYNCED, Action.TO_POST, Action.TO_UPDATE);
+    }
+
+    // TODO check if implementation is correct
+    @Override
+    public Interpretation get(long id) {
+        Interpretation interpretation = interpretationStore.queryById(id);
+
+        if (interpretation != null) {
+            Action action = stateStore.queryActionForModel(interpretation);
+
+            if (!Action.TO_DELETE.equals(action)) {
+                return interpretation;
+            }
+        }
+        return null;
+    }
+
+    // TODO check if implementation is correct
+    @Override
+    public Interpretation get(String uid) {
+        Interpretation interpretation = interpretationStore.queryByUid(uid);
+
+        if (interpretation != null) {
+            Action action = stateStore.queryActionForModel(interpretation);
+
+            if (!Action.TO_DELETE.equals(action)) {
+                return interpretation;
+            }
+        }
+        return null;
+    }
+
+    @Override
     public boolean remove(Interpretation object) {
         Preconditions.isNull(object, "Interpretation object must not be null");
 
@@ -178,7 +216,6 @@ public class InterpretationServiceImpl implements InterpretationService {
                 status = false;
                 break;
             }
-
         }
 
         return status;
