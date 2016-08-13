@@ -163,4 +163,109 @@ public class Interpretation extends BaseIdentifiableObject {
         this.comments = comments;
     }
 
+    /**
+     * Convenience method which allows to set InterpretationElements
+     * to Interpretation depending on their mime-type.
+     *
+     * @param elements List of interpretation elements.
+     */
+    public void setInterpretationElements(List<InterpretationElement> elements) {
+        if (elements == null || elements.isEmpty()) {
+            return;
+        }
+
+        if (getType() == null) {
+            return;
+        }
+
+        if (getType().equals(TYPE_DATA_SET_REPORT)) {
+            for (InterpretationElement element : elements) {
+                switch (element.getType()) {
+                    case InterpretationElement.TYPE_DATA_SET: {
+                        setDataSet(element);
+                        break;
+                    }
+                    case InterpretationElement.TYPE_PERIOD: {
+                        setPeriod(element);
+                        break;
+                    }
+                    case InterpretationElement.TYPE_ORGANISATION_UNIT: {
+                        setOrganisationUnit(element);
+                        break;
+                    }
+                }
+            }
+        } else {
+            switch (getType()) {
+                case InterpretationElement.TYPE_CHART: {
+                    setChart(elements.get(0));
+                    break;
+                }
+                case InterpretationElement.TYPE_MAP: {
+                    setMap(elements.get(0));
+                    break;
+                }
+                case InterpretationElement.TYPE_REPORT_TABLE: {
+                    setReportTable(elements.get(0));
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
+     * Convenience method which allows to get
+     * interpretation elements assigned to current object.
+     *
+     * @return List of interpretation elements.
+     */
+    public List<InterpretationElement> getInterpretationElements() {
+        List<InterpretationElement> elements = new ArrayList<>();
+
+        switch (getType()) {
+            case Interpretation.TYPE_CHART: {
+                elements.add(getChart());
+                break;
+            }
+            case Interpretation.TYPE_MAP: {
+                elements.add(getMap());
+                break;
+            }
+            case Interpretation.TYPE_REPORT_TABLE: {
+                elements.add(getReportTable());
+                break;
+            }
+            case Interpretation.TYPE_DATA_SET_REPORT: {
+                elements.add(getDataSet());
+                elements.add(getPeriod());
+                elements.add(getOrganisationUnit());
+                break;
+            }
+        }
+
+        return elements;
+    }
+
+
+    /**
+     * Method modifies the original interpretation text and sets TO_UPDATE as state,
+     * if the object was received from server.
+     * <p/>
+     * If the model was persisted only locally, the State will remain TO_POST.
+     *
+     * @param text Edited text of interpretation.
+     */
+    public void updateInterpretation(String text) {
+        setText(text);
+
+//        if (state != State.TO_DELETE && state != State.TO_POST) {
+//            state = State.TO_UPDATE;
+//        }
+//
+//        super.save();
+
+        // TODO Verify
+        // To be saved with interactor's save method
+    }
+
 }
