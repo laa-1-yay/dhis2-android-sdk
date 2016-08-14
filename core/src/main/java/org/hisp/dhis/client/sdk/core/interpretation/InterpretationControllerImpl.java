@@ -109,6 +109,23 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         this.mUserAccountStore = mUserAccountStore;
     }
 
+    @Override
+    public void syncInterpretations(SyncStrategy syncStrategy) throws ApiException {
+        getInterpretationDataFromServer();
+        sendLocalChanges();
+    }
+
+    @Override
+    public void pull(SyncStrategy syncStrategy) throws ApiException {
+        getInterpretationDataFromServer();
+        sendLocalChanges();
+    }
+
+    @Override
+    public void pull(SyncStrategy syncStrategy, Set<String> uids) throws ApiException {
+
+    }
+
     private void sendLocalChanges() throws ApiException {
         sendInterpretationChanges();
         sendInterpretationCommentChanges();
@@ -598,16 +615,5 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         }
 
         return ops;
-    }
-
-    @Override
-    public void pull(SyncStrategy syncStrategy) throws ApiException {
-        getInterpretationDataFromServer();
-        sendLocalChanges();
-    }
-
-    @Override
-    public void pull(SyncStrategy syncStrategy, Set<String> uids) throws ApiException {
-
     }
 }
