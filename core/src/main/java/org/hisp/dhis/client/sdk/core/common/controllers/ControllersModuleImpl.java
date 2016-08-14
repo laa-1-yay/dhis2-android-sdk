@@ -28,8 +28,11 @@
 
 package org.hisp.dhis.client.sdk.core.common.controllers;
 
+import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.common.network.NetworkModule;
 import org.hisp.dhis.client.sdk.core.common.persistence.PersistenceModule;
+import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
+import org.hisp.dhis.client.sdk.core.common.preferences.LastUpdatedPreferences;
 import org.hisp.dhis.client.sdk.core.common.preferences.PreferencesModule;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardContentController;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardContentControllerImpl;
@@ -39,6 +42,13 @@ import org.hisp.dhis.client.sdk.core.dataelement.DataElementController;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementControllerImpl;
 import org.hisp.dhis.client.sdk.core.event.EventController;
 import org.hisp.dhis.client.sdk.core.event.EventControllerImpl;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationApiClient;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationController;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationControllerImpl;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationStore;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetController;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetControllerImpl;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitController;
@@ -93,6 +103,7 @@ public class ControllersModuleImpl implements ControllersModule {
     private final EventController eventController;
     private final DashboardController dashboardController;
     private final DashboardContentController dashboardContentController;
+    private final InterpretationController interpretationController;
 
     public ControllersModuleImpl(NetworkModule networkModule,
                                  PersistenceModule persistenceModule,
@@ -244,8 +255,20 @@ public class ControllersModuleImpl implements ControllersModule {
                 networkModule.getDashboardApiClient(),
                 preferencesModule.getLastUpdatedPreferences(),
                 persistenceModule.getTransactionManager(), logger);
-    }
 
+        interpretationController = new InterpretationControllerImpl(systemInfoController,
+                persistenceModule.getInterpretationStore(),
+                persistenceModule.getInterpretationElementStore(),
+                persistenceModule.getInterpretationCommentStore(),
+                preferencesModule.getLastUpdatedPreferences(),
+                networkModule.getInterpretationApiClient(),
+                networkModule.getUserApiClient(),
+                persistenceModule.getUserStore(),
+                persistenceModule.getUserAccountStore(),
+                persistenceModule.getStateStore(),
+                persistenceModule.getTransactionManager(), logger);
+
+    }
     @Override
     public SystemInfoController getSystemInfoController() {
         return systemInfoController;
@@ -299,6 +322,11 @@ public class ControllersModuleImpl implements ControllersModule {
     @Override
     public DashboardContentController getDashboardContentController() {
         return dashboardContentController;
+    }
+
+    @Override
+    public InterpretationController getInterpretationController() {
+        return interpretationController;
     }
 
     @Override

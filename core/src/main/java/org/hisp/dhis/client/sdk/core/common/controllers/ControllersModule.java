@@ -32,6 +32,7 @@ import org.hisp.dhis.client.sdk.core.dashboard.DashboardContentController;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardController;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementController;
 import org.hisp.dhis.client.sdk.core.event.EventController;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationController;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetController;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitController;
 import org.hisp.dhis.client.sdk.core.program.ProgramController;
@@ -47,6 +48,7 @@ import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeControl
 import org.hisp.dhis.client.sdk.core.user.AssignedOrganisationUnitsController;
 import org.hisp.dhis.client.sdk.core.user.AssignedProgramsController;
 import org.hisp.dhis.client.sdk.core.user.UserAccountController;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 public interface ControllersModule {
     SystemInfoController getSystemInfoController();
@@ -70,6 +72,8 @@ public interface ControllersModule {
     DashboardController getDashboardController();
 
     DashboardContentController getDashboardContentController();
+
+    InterpretationController getInterpretationController();
 
     DataElementController getDataElementController();
 
