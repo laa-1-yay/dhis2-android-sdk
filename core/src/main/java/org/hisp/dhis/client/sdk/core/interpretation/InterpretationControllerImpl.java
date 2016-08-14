@@ -526,24 +526,72 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
             }
         }
 
-        List<Interpretation> persistedInterpretations = null;
+        // TODO Remove Commented Old Code
+//        List<Interpretation> persistedInterpretations = null;
+//        // mInterpretationStore.filter(Action.TO_POST);
+//        if (persistedInterpretations != null
+//                && !persistedInterpretations.isEmpty()) {
+//            for (Interpretation interpretation : persistedInterpretations) {
+//                List<InterpretationElement> elements =
+//                        mInterpretationElementStore.query(interpretation);
+//                // mInterpretationService.setInterpretationElements(interpretation, elements);
+//
+//                List<InterpretationComment> comments = null;
+//                // mInterpretationCommentStore.query(interpretation, Action
+//                // .TO_POST);
+//                interpretation.setComments(comments);
+//            }
+//        }
+
+//        List<Interpretation> persistedInterpretations = queryInterpretations();
+//        if (persistedInterpretations != null
+//                && !persistedInterpretations.isEmpty()) {
+//            for (Interpretation interpretation : persistedInterpretations) {
+//                interpretation.setInterpretationElements(
+//                        queryInterpretationElements(interpretation));
+//                interpretation.setComments(queryInterpretationComments(interpretation));
+//            }
+//        }
+//
+//        return null;
+
+        List<Interpretation> persistedInterpretations = stateStore.queryModelsWithActions(Interpretation.class,
+                Action.SYNCED, Action.TO_UPDATE, Action.TO_DELETE);
+        logger.d("persistedInterpretations", persistedInterpretations!=null?persistedInterpretations.toString():"Empty persistedInterpretations");
         // mInterpretationStore.filter(Action.TO_POST);
         if (persistedInterpretations != null
                 && !persistedInterpretations.isEmpty()) {
             for (Interpretation interpretation : persistedInterpretations) {
                 List<InterpretationElement> elements =
                         mInterpretationElementStore.query(interpretation);
-                // mInterpretationService.setInterpretationElements(interpretation, elements);
+                logger.d("elements", elements!=null?elements.toString():"Empty elements");
 
-                List<InterpretationComment> comments = null;
-                // mInterpretationCommentStore.query(interpretation, Action
-                // .TO_POST);
-                interpretation.setComments(comments);
+                interpretation.setInterpretationElements(elements);
+
+                // Set Comments
+                List<InterpretationComment> allInterpretationComments = mInterpretationCommentStore.query
+                        (interpretation.getUId());
+                Map<Long, Action> actionMap = stateStore.queryActionsForModel(InterpretationComment.class);
+
+                List<InterpretationComment> interpretationComments = new ArrayList<>();
+                for (InterpretationComment interpretationComment : allInterpretationComments) {
+                    Action action = actionMap.get(interpretationComment.getUId());
+
+                    if (!Action.TO_POST.equals(action)) {
+                        interpretationComments.add(interpretationComment);
+                    }
+                }
+
+                logger.d("comments", interpretationComments!=null?interpretationComments.toString():"Empty comments");
+                interpretation.setComments(interpretationComments);
+
+//                 mInterpretationCommentStore.query(interpretation, Action
+//                 .TO_POST);
+//                interpretation.setComments(comments);
             }
         }
 
-        // return merge(actualInterpretations, updatedInterpretations, persistedInterpretations);
-        return null;
+        return ModelUtils.merge(actualInterpretations, updatedInterpretations, persistedInterpretations);
     }
 
     private List<InterpretationComment> updateInterpretationComments(List<Interpretation>
