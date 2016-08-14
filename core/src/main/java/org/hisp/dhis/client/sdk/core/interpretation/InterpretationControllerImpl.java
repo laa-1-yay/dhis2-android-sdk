@@ -691,7 +691,10 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
             // we also have to insert interpretation elements here
             ops.add(DbOperationImpl.with(mInterpretationStore).insert(item));
 
-            List<InterpretationElement> elements = new ArrayList<>();
+            // TODO check if below is correct
+            List<InterpretationElement> elements = item.getInterpretationElements();
+
+            // List<InterpretationElement> elements = new ArrayList<>();
             // = mInterpretationService.getInterpretationElements(item);
             for (InterpretationElement element : elements) {
                 ops.add(DbOperationImpl.with(mInterpretationElementStore).insert(element));
@@ -700,4 +703,5 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
 
         return ops;
     }
+
 }
