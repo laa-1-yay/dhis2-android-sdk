@@ -321,4 +321,16 @@ public class UserAccount implements IdentifiableObject {
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
+    @JsonIgnore
+    public static User toUser(UserAccount userAccount) {
+        User user = new User();
+        user.setUId(userAccount.getUId());
+        user.setAccess(userAccount.getAccess());
+        user.setCreated(user.getCreated());
+        user.setLastUpdated(userAccount.getLastUpdated());
+        user.setName(userAccount.getName());
+        user.setDisplayName(userAccount.getDisplayName());
+        return user;
+    }
 }
