@@ -31,6 +31,7 @@ package org.hisp.dhis.client.sdk.core.common.network;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardApiClient;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementApiClient;
 import org.hisp.dhis.client.sdk.core.event.EventApiClient;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationApiClient;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetApiClient;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitApiClient;
 import org.hisp.dhis.client.sdk.core.program.ProgramApiClient;
@@ -44,6 +45,7 @@ import org.hisp.dhis.client.sdk.core.program.ProgramStageSectionApiClient;
 import org.hisp.dhis.client.sdk.core.systeminfo.SystemInfoApiClient;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeApiClient;
 import org.hisp.dhis.client.sdk.core.user.UserApiClient;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 public interface NetworkModule {
     SystemInfoApiClient getSystemInfoApiClient();
@@ -61,6 +63,8 @@ public interface NetworkModule {
     EventApiClient getEventApiClient();
 
     DashboardApiClient getDashboardApiClient();
+
+    InterpretationApiClient getInterpretationApiClient();
 
     DataElementApiClient getDataElementApiClient();
 
