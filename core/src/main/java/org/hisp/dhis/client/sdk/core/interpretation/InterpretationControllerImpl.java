@@ -466,32 +466,12 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     private List<Interpretation> updateInterpretations(DateTime lastUpdated) {
-        final Map<String, String> QUERY_MAP_BASIC = new HashMap<>();
-        final Map<String, String> QUERY_MAP_FULL = new HashMap<>();
-        final String BASE = "id,created,lastUpdated,name,displayName,access";
 
-        QUERY_MAP_BASIC.put("fields", "id");
-        QUERY_MAP_FULL.put("fields", BASE + ",text,type," +
-                "chart" + "[" + BASE + "]," +
-                "map" + "[" + BASE + "]," +
-                "reportTable" + "[" + BASE + "]," +
-                "user" + "[" + BASE + "]," +
-                "dataSet" + "[" + BASE + "]," +
-                "period" + "[" + BASE + "]," +
-                "organisationUnit" + "[" + BASE + "]," +
-                "comments" + "[" + BASE + ",user,text" + "]");
+        List<Interpretation> actualInterpretations = interpretationApiClient.getInterpretationUids();
+        logger.d("actualInterpretations", actualInterpretations!=null?actualInterpretations.toString():"Empty actualInterpretations");
 
-        if (lastUpdated != null) {
-            QUERY_MAP_FULL.put("filter", "lastUpdated:gt:" + lastUpdated.toString());
-        }
-
-        /* List<Interpretation> actualInterpretations = NetworkUtils.unwrapResponse(mDhisApi
-                .getInterpretations(QUERY_MAP_BASIC), "interpretations");
-
-        List<Interpretation> updatedInterpretations = NetworkUtils.unwrapResponse(mDhisApi
-                .getInterpretations(QUERY_MAP_FULL), "interpretations"); */
-
-        List<Interpretation> updatedInterpretations = new ArrayList<>();
+        List<Interpretation> updatedInterpretations = interpretationApiClient.getInterpretations(lastUpdated);
+        logger.d("updatedInterpretations", updatedInterpretations!=null?updatedInterpretations.toString():"Empty updatedInterpretations");
 
         if (updatedInterpretations != null && !updatedInterpretations.isEmpty()) {
 
