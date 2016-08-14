@@ -66,6 +66,17 @@ public class DashboardElementStoreImpl extends AbsDataStore<DashboardElement,
         return getMapper().mapToModels(elementFlows);
     }
 
+
+    @Override
+    public List<DashboardElement> query(String dashboardItemUId) {
+        isNull(dashboardItemUId, "dashboardItemUId item must not be null");
+        List<DashboardElementFlow> elementFlows = new Select()
+                .from(DashboardElementFlow.class)
+                .where(DashboardElementFlow_Table.dashboardItem.is(dashboardItemUId))
+                .queryList();
+        return getMapper().mapToModels(elementFlows);
+    }
+
     @Override
     public DashboardElement getDashboardElement(long dashboardElementId) {
         DashboardElementFlow dashboardElementFlow = new Select()
