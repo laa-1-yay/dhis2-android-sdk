@@ -142,7 +142,7 @@ public class DashboardApiClientImpl implements DashboardApiClient {
     @Override
     @NonNull
     public Response postDashboard(Dashboard dashboard) {
-        return null;
+        return call(dashboardApiClientRetrofit.postDashboard(dashboard));
     }
 
     @Override
@@ -154,7 +154,7 @@ public class DashboardApiClientImpl implements DashboardApiClient {
     @Override
     @NonNull
     public Response putDashboard(Dashboard dashboard) {
-        return null;
+        return call(dashboardApiClientRetrofit.putDashboard(dashboard.getUId(), dashboard));
     }
 
     @Override
