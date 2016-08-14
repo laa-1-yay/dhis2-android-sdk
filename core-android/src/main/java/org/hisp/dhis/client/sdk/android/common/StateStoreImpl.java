@@ -47,6 +47,8 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardFlow_Table
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow_Table;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.StateFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardItemFlow_Table;
@@ -62,6 +64,7 @@ import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardElement;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -75,22 +78,25 @@ import static org.hisp.dhis.client.sdk.utils.Preconditions.isNull;
 public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateStore {
 
     private  Mapper<Event, EventFlow> eventMapper;
-    Mapper<Dashboard, DashboardFlow> dashboardMapper;
-    Mapper<DashboardItem, DashboardItemFlow> dashboardItemMapper;
-    Mapper<DashboardElement, DashboardElementFlow> dashboardElementMapper;
-    Mapper<DashboardContent, DashboardContentFlow> dashboardContentMapper;
+    private Mapper<Dashboard, DashboardFlow> dashboardMapper;
+    private Mapper<DashboardItem, DashboardItemFlow> dashboardItemMapper;
+    private Mapper<DashboardElement, DashboardElementFlow> dashboardElementMapper;
+    private Mapper<DashboardContent, DashboardContentFlow> dashboardContentMapper;
+    private Mapper<Interpretation, InterpretationFlow> interpretationMapper;
 
     public StateStoreImpl(Mapper<Event, EventFlow> eventMapper,
                           Mapper<Dashboard, DashboardFlow> dashboardMapper,
                           Mapper<DashboardItem, DashboardItemFlow> dashboardItemMapper,
                           Mapper<DashboardElement, DashboardElementFlow> dashboardElementMapper,
-                          Mapper<DashboardContent, DashboardContentFlow> dashboardContentMapper) {
+                          Mapper<DashboardContent, DashboardContentFlow> dashboardContentMapper,
+                          Mapper<Interpretation, InterpretationFlow> interpretationMapper) {
         super(StateFlow.MAPPER);
         this.eventMapper = eventMapper;
         this.dashboardMapper = dashboardMapper;
         this.dashboardItemMapper = dashboardItemMapper;
         this.dashboardElementMapper = dashboardElementMapper;
         this.dashboardContentMapper = dashboardContentMapper;
+        this.interpretationMapper = interpretationMapper;
     }
 
     @Override
@@ -268,6 +274,16 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
                     DashboardContentFlow_Table.id.withTable(), withAction, actions);
             if(dashboardContentFlows!=null && !dashboardContentFlows.isEmpty()){
                 return (List<T>) dashboardContentMapper.mapToModels(dashboardContentFlows);
+            }else{
+                return new ArrayList<>();
+            }
+        }
+
+        if (Interpretation.class.equals(clazz)) {
+            List<InterpretationFlow> interpretationFlows = (List<InterpretationFlow>) queryModels(clazz, null,
+                    InterpretationFlow_Table.id.withTable(), withAction, actions);
+            if(interpretationFlows!=null && !interpretationFlows.isEmpty()){
+                return (List<T>) interpretationMapper.mapToModels(interpretationFlows);
             }else{
                 return new ArrayList<>();
             }
