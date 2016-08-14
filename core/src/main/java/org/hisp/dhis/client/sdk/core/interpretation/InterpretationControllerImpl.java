@@ -28,20 +28,28 @@
 
 package org.hisp.dhis.client.sdk.core.interpretation;
 
+import org.hisp.dhis.client.sdk.core.common.StateStore;
+import org.hisp.dhis.client.sdk.core.common.controllers.AbsDataController;
 import org.hisp.dhis.client.sdk.core.common.controllers.IdentifiableController;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.core.common.network.Response;
 import org.hisp.dhis.client.sdk.core.common.persistence.DbOperationImpl;
 import org.hisp.dhis.client.sdk.core.common.persistence.IdentifiableObjectStore;
+import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
+import org.hisp.dhis.client.sdk.core.common.preferences.LastUpdatedPreferences;
 import org.hisp.dhis.client.sdk.core.common.utils.ModelUtils;
+import org.hisp.dhis.client.sdk.core.systeminfo.SystemInfoController;
 import org.hisp.dhis.client.sdk.core.user.UserAccountService;
+import org.hisp.dhis.client.sdk.core.user.UserAccountStore;
+import org.hisp.dhis.client.sdk.core.user.UserApiClient;
 import org.hisp.dhis.client.sdk.core.user.UserStore;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import org.hisp.dhis.client.sdk.models.user.User;
 import org.hisp.dhis.client.sdk.models.user.UserAccount;
+import org.hisp.dhis.client.sdk.utils.Logger;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -50,28 +58,55 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public final class InterpretationControllerImpl implements IdentifiableController<Interpretation> {
-    private final InterpretationService mInterpretationService;
-    private final UserAccountService mUserAccountService;
+public final class InterpretationControllerImpl extends AbsDataController<Interpretation>
+        implements InterpretationController {
 
-    private final IdentifiableObjectStore<Interpretation> mInterpretationStore;
+    /* Controllers */
+    private final SystemInfoController systemInfoController;
+
+    /* Clients */
+    private final InterpretationApiClient interpretationApiClient;
+    private final UserApiClient userApiClient;
+
+    private final UserAccountStore mUserAccountStore;
+    private final InterpretationStore mInterpretationStore;
     private final InterpretationElementStore mInterpretationElementStore;
     private final InterpretationCommentStore mInterpretationCommentStore;
 
-    private final UserStore mUserStore;
+    /* last updated preferences */
+    private final LastUpdatedPreferences lastUpdatedPreferences;
 
-    public InterpretationControllerImpl(InterpretationService interpretationsService,
-                                        UserAccountService userAccountService,
-                                        IdentifiableObjectStore<Interpretation> mInterpretationStore,
+    private final UserStore mUserStore;
+    private final StateStore stateStore;
+
+    /* database transaction manager */
+    private final TransactionManager transactionManager;
+
+
+    public InterpretationControllerImpl(SystemInfoController systemInfoController,
+                                        InterpretationStore mInterpretationStore,
                                         InterpretationElementStore mInterpretationElementStore,
                                         InterpretationCommentStore mInterpretationCommentStore,
-                                        UserStore mUserStore) {
-        this.mInterpretationService = interpretationsService;
-        this.mUserAccountService = userAccountService;
+                                        LastUpdatedPreferences lastUpdatedPreferences,
+                                        InterpretationApiClient interpretationApiClient,
+                                        UserApiClient userApiClient,
+                                        UserStore mUserStore,
+                                        UserAccountStore mUserAccountStore,
+                                        StateStore stateStore,
+                                        TransactionManager transactionManager, Logger logger) {
+        super(logger, mInterpretationStore);
+
+        this.systemInfoController = systemInfoController;
         this.mInterpretationStore = mInterpretationStore;
         this.mInterpretationElementStore = mInterpretationElementStore;
         this.mInterpretationCommentStore = mInterpretationCommentStore;
+        this.lastUpdatedPreferences = lastUpdatedPreferences;
+        this.interpretationApiClient = interpretationApiClient;
+        this.userApiClient = userApiClient;
+        this.stateStore = stateStore;
+        this.transactionManager = transactionManager;
         this.mUserStore = mUserStore;
+        this.mUserAccountStore = mUserAccountStore;
     }
 
     private void sendLocalChanges() throws ApiException {
