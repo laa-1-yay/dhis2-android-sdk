@@ -159,20 +159,20 @@ public class DashboardApiClientImpl implements DashboardApiClient {
 
     @Override
     @NonNull
-    public Response deleteDashboard(Dashboard dashboard) {
-        return null;
+    public Response deleteDashboard(String dashboardUId) {
+        return call(dashboardApiClientRetrofit.deleteDashboard(dashboardUId));
     }
 
     @Override
     @NonNull
-    public Response deleteDashboardItem(DashboardItem dashboardItem) {
-        return null;
+    public Response deleteDashboardItem(String dashboardUId, String dashboardItemUId) {
+        return call(dashboardApiClientRetrofit.deleteDashboardItem(dashboardUId, dashboardItemUId));
     }
 
     @Override
     @NonNull
-    public Response deleteDashboardItemContent(DashboardElement dashboardElement) {
-        return null;
+    public Response deleteDashboardItemContent(String dashboardUId, String dashboardItemUId, String dashboardContentUId) {
+        return call(dashboardApiClientRetrofit.deleteDashboardItemContent(dashboardUId, dashboardItemUId, dashboardContentUId));
     }
 
     @Override
