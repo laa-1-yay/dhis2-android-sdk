@@ -43,6 +43,7 @@ import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardElement;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;
 import org.hisp.dhis.client.sdk.models.event.Event;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.user.UserAccount;
 
 import static org.hisp.dhis.client.sdk.utils.Preconditions.isNull;
@@ -174,6 +175,8 @@ public final class StateFlow extends BaseModelFlow {
                 return DashboardElementFlow.class;
             } else if (DashboardContent.class.equals(objectClass)) {
                 return DashboardContentFlow.class;
+            } else if (Interpretation.class.equals(objectClass)) {
+                return InterpretationFlow.class;
         }
 
             throw new IllegalArgumentException("Unsupported type: " + objectClass.getSimpleName());
