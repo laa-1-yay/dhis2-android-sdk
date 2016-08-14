@@ -34,6 +34,9 @@ import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemService;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardService;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementService;
 import org.hisp.dhis.client.sdk.core.event.EventService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationService;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetService;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitService;
 import org.hisp.dhis.client.sdk.core.program.ProgramIndicatorService;
@@ -47,6 +50,8 @@ import org.hisp.dhis.client.sdk.core.program.ProgramStageService;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeService;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityDataValueService;
 import org.hisp.dhis.client.sdk.core.user.UserAccountService;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 
 public interface ServicesModule {
     UserAccountService getUserAccountService();
@@ -70,6 +75,12 @@ public interface ServicesModule {
     DashboardItemService getDashboardItemService();
 
     DashboardContentService getDashboardContentService();
+
+    InterpretationService getInterpretationService();
+
+    InterpretationElementService getInterpretationElementService();
+
+    InterpretationCommentService getInterpretationCommentService();
 
     DataElementService getDataElementService();
 
