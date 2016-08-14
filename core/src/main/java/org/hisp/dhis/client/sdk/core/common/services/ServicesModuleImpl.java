@@ -28,23 +28,25 @@
 
 package org.hisp.dhis.client.sdk.core.common.services;
 
-import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.common.persistence.PersistenceModule;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardContentService;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardContentServiceImpl;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardElementService;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardElementServiceImpl;
-import org.hisp.dhis.client.sdk.core.dashboard.DashboardElementStore;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemService;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemServiceImpl;
-import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemStore;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardService;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardServiceImpl;
-import org.hisp.dhis.client.sdk.core.dashboard.DashboardStore;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementService;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementServiceImpl;
 import org.hisp.dhis.client.sdk.core.event.EventService;
 import org.hisp.dhis.client.sdk.core.event.EventServiceImpl;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentServiceImpl;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementServiceImpl;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationService;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationServiceImpl;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetService;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetServiceImpl;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitService;
@@ -85,6 +87,9 @@ public final class ServicesModuleImpl implements ServicesModule {
     private final DashboardElementService dashboardElementService;
     private final DashboardItemService dashboardItemService;
     private final DashboardContentService dashboardContentService;
+    private final InterpretationService interpretationService;
+    private final InterpretationElementService interpretationElementService;
+    private final InterpretationCommentService interpretationCommentService;
     private final ProgramStageDataElementService programStageDataElementService;
     private final DataElementService dataElementService;
     private final TrackedEntityAttributeService trackedEntityAttributeService;
@@ -151,6 +156,19 @@ public final class ServicesModuleImpl implements ServicesModule {
 
         dashboardContentService = new DashboardContentServiceImpl(
                 persistenceModule.getDashboardContentStore());
+
+        interpretationService = new InterpretationServiceImpl(
+                persistenceModule.getInterpretationStore(),
+                persistenceModule.getStateStore(),
+                getInterpretationElementService());
+
+        interpretationElementService = new InterpretationElementServiceImpl(
+                persistenceModule.getInterpretationElementStore(),
+                persistenceModule.getStateStore());
+
+        interpretationCommentService = new InterpretationCommentServiceImpl(
+                persistenceModule.getInterpretationCommentStore(),
+                persistenceModule.getStateStore());
 
         dataElementService = new DataElementServiceImpl(
                 persistenceModule.getDataElementStore());
@@ -219,6 +237,21 @@ public final class ServicesModuleImpl implements ServicesModule {
     @Override
     public DashboardContentService getDashboardContentService() {
         return dashboardContentService;
+    }
+
+    @Override
+    public InterpretationService getInterpretationService() {
+        return interpretationService;
+    }
+
+    @Override
+    public InterpretationElementService getInterpretationElementService() {
+        return interpretationElementService;
+    }
+
+    @Override
+    public InterpretationCommentService getInterpretationCommentService() {
+        return interpretationCommentService;
     }
 
     @Override
