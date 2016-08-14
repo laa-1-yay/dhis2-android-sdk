@@ -34,16 +34,21 @@ import org.hisp.dhis.client.sdk.core.common.controllers.IdentifiableController;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.core.common.network.Response;
+import org.hisp.dhis.client.sdk.core.common.persistence.DbOperation;
 import org.hisp.dhis.client.sdk.core.common.persistence.DbOperationImpl;
+import org.hisp.dhis.client.sdk.core.common.persistence.DbUtils;
 import org.hisp.dhis.client.sdk.core.common.persistence.IdentifiableObjectStore;
 import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
+import org.hisp.dhis.client.sdk.core.common.preferences.DateType;
 import org.hisp.dhis.client.sdk.core.common.preferences.LastUpdatedPreferences;
+import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.common.utils.ModelUtils;
 import org.hisp.dhis.client.sdk.core.systeminfo.SystemInfoController;
 import org.hisp.dhis.client.sdk.core.user.UserAccountService;
 import org.hisp.dhis.client.sdk.core.user.UserAccountStore;
 import org.hisp.dhis.client.sdk.core.user.UserApiClient;
 import org.hisp.dhis.client.sdk.core.user.UserStore;
+import org.hisp.dhis.client.sdk.models.common.state.Action;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
@@ -403,6 +408,41 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     private void getInterpretationDataFromServer() throws ApiException {
+
+        DateTime lastUpdated = lastUpdatedPreferences.get(ResourceType.INTERPRETATIONS, DateType.SERVER);
+        DateTime serverTime = systemInfoController.getSystemInfo().getServerDate();
+
+        List<Interpretation> interpretations = updateInterpretations(lastUpdated);
+        logger.d("testInterpretations", interpretations!=null?interpretations.toString():"Empty Interpretaions");
+        List<InterpretationComment> comments = updateInterpretationComments(interpretations);
+        logger.d("testComments", comments!=null?comments.toString():"Empty comments");
+        List<User> users = updateInterpretationUsers(interpretations, comments);
+        logger.d("testUsers", users!=null?users.toString():"Empty users");
+
+
+        List<DbOperation> dbOperations = new ArrayList<>();
+
+        // TODO Remove Commented Old Code
+//        dbOperations.addAll(DbUtils.createOperations(mUserStore,mUserStore.queryAll(), users));
+//        dbOperations.addAll(createOperations(
+//                mInterpretationStore.filter(Action.TO_POST), interpretations));
+//        dbOperations.addAll(DbUtils.createOperations(
+//                mInterpretationCommentStore, mInterpretationCommentStore.query
+//                        (Action.TO_POST), comments));
+
+        dbOperations.addAll(DbUtils.createOperations(mUserStore, mUserStore.queryAll(), users));
+        dbOperations.addAll(createOperations(stateStore.queryModelsWithActions(Interpretation.class,
+                Action.SYNCED, Action.TO_UPDATE, Action.TO_DELETE), interpretations));
+        dbOperations.addAll(DbUtils.createOperations(mInterpretationCommentStore,
+                stateStore.queryModelsWithActions(InterpretationComment.class, Action.SYNCED, Action
+                        .TO_UPDATE, Action.TO_DELETE), comments));
+
+        transactionManager.transact(dbOperations);
+        lastUpdatedPreferences.save(ResourceType.DASHBOARDS, DateType.SERVER, serverTime);
+    }
+
+    // TODO Remove this
+    private void getInterpretationDataFromServerOld() throws ApiException {
         /* DateTime lastUpdated = DateTimeManager.getInstance()
                 .getLastUpdated(ResourceType.INTERPRETATIONS);
         DateTime serverTime = mDhisApi.getSystemInfo().getServerDate();
