@@ -591,7 +591,7 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
 
             updateDashboardTimeStamp(dashboard);
         } catch (ApiException apiException) {
-            // handleApiException(apiException);
+             handleApiException(apiException, dashboard);
         }
     }
 
@@ -605,18 +605,18 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
 
             updateDashboardTimeStamp(dashboard);
         } catch (ApiException apiException) {
-            // handleApiException(apiException, dashboard, dashboardStore);
+             handleApiException(apiException, dashboard);
         }
     }
 
     private void deleteDashboard(Dashboard dashboard) {
         try {
             // dhisApi.deleteDashboard(dashboard.getUId());
-            dashboardApiClient.deleteDashboard(dashboard);
+            dashboardApiClient.deleteDashboard(dashboard.getUId());
 
             dashboardStore.delete(dashboard);
         } catch (ApiException apiException) {
-            // handleApiException(apiException, dashboard, dashboardStore);
+             handleApiException(apiException, dashboard);
         }
     }
 
@@ -722,7 +722,7 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
             try {
                 /* dhisApi.deleteDashboardItem(dashboard.getUId(),
                         dashboardItem.getUId()); */
-                dashboardApiClient.deleteDashboardItem(dashboardItem);
+                dashboardApiClient.deleteDashboardItem(dashboard.getUId(), dashboardItem.getUId());
                 dashboardItemStore.delete(dashboardItem);
 
                 // we have to update timestamp of dashboard after adding new item.
@@ -826,7 +826,8 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
                         item.getUId(), element.getUId()); */
                 /* dashboardApiClient.deleteDashboardItemContent(dashboard.getUId(),
                         item.getUId(), element.getUId()); */
-                dashboardApiClient.deleteDashboardItemContent(element);
+                dashboardApiClient.deleteDashboardItemContent(dashboard.getUId(),
+                        item.getUId(), element.getUId());
                 dashboardElementStore.delete(element);
 
                 // removal of elements changes
@@ -850,7 +851,7 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
 
             dashboardStore.save(dashboard);
         } catch (ApiException apiException) {
-            // handleApiException(apiException);
+            handleApiException(apiException, dashboard);
         }
     }
 
