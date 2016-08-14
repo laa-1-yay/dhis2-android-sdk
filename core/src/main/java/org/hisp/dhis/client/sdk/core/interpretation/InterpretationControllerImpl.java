@@ -704,4 +704,24 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         return ops;
     }
 
+    @Override
+    public User getCurrentUserLocal() {
+        UserAccount currentUserAccount = getCurrentUserAccount();
+        if(currentUserAccount == null){
+            return null;
+        }
+        User currentUser = mUserStore.queryByUid(currentUserAccount.getUId());
+        if (currentUser == null) {
+            currentUser = UserAccount.toUser(currentUserAccount);
+        }
+        return currentUser;
+    }
+
+    private UserAccount getCurrentUserAccount(){
+        List<UserAccount> userAccounts = mUserAccountStore.queryAll();
+        if (userAccounts != null && !userAccounts.isEmpty()) {
+            return userAccounts.get(0);
+        }
+        return null;
+    }
 }
