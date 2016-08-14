@@ -610,22 +610,34 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     private List<User> updateInterpretationUsers(List<Interpretation> interpretations,
                                                  List<InterpretationComment> comments) {
         Map<String, User> users = new HashMap<>();
-        UserAccount currentUserAccount = mUserAccountService.get();
+
+        UserAccount currentUserAccount = userApiClient.getUserAccount();
         User currentUser = mUserStore.queryByUid(currentUserAccount.getUId());
         if (currentUser == null) {
-            currentUser = mUserAccountService.toUser(currentUserAccount);
+            currentUser = UserAccount.toUser(currentUserAccount);
         }
+
+        // TODO Remove this , if above implementation is incorrect
+//        UserAccount currentUserAccount = mUserAccountService.get();
+//        User currentUser = mUserStore.queryByUid(currentUserAccount.getUId());
+//        if (currentUser == null) {
+//            currentUser = mUserAccountService.toUser(currentUserAccount);
+//        }
 
         users.put(currentUser.getUId(), currentUser);
 
         if (interpretations != null && !interpretations.isEmpty()) {
             for (Interpretation interpretation : interpretations) {
                 User user = interpretation.getUser();
-                if (users.containsKey(user.getUId())) {
-                    user = users.get(user.getUId());
-                    interpretation.setUser(user);
-                } else {
-                    users.put(user.getUId(), user);
+
+                // Add extra check to avoid corrupted data
+                if(user.getName()!=null) {
+                    if (users.containsKey(user.getUId())) {
+                        user = users.get(user.getUId());
+                        interpretation.setUser(user);
+                    } else {
+                        users.put(user.getUId(), user);
+                    }
                 }
             }
         }
@@ -633,11 +645,15 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         if (comments != null && !comments.isEmpty()) {
             for (InterpretationComment comment : comments) {
                 User user = comment.getUser();
-                if (users.containsKey(user.getUId())) {
-                    user = users.get(user.getUId());
-                    comment.setUser(user);
-                } else {
-                    users.put(user.getUId(), user);
+
+                // Add extra check to avoid corrupted data
+                if(user.getName()!=null) {
+                    if (users.containsKey(user.getUId())) {
+                        user = users.get(user.getUId());
+                        comment.setUser(user);
+                    } else {
+                        users.put(user.getUId(), user);
+                    }
                 }
             }
         }
