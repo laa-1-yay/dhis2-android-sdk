@@ -37,5 +37,6 @@ import org.hisp.dhis.client.sdk.models.user.User;
 public interface InterpretationController extends IdentifiableController<Interpretation> {
 
     void syncInterpretations(SyncStrategy syncStrategy) throws ApiException;
-    
+
+    User getCurrentUserLocal();
 }
