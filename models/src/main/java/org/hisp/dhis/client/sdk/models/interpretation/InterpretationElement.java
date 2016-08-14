@@ -36,12 +36,21 @@ import org.hisp.dhis.client.sdk.models.common.base.BaseIdentifiableObject;
  * reportTable, dataSet, period, organisationUnit}
  */
 public class InterpretationElement extends BaseIdentifiableObject {
-    public static final String TYPE_CHART = "chart";
-    public static final String TYPE_MAP = "map";
-    public static final String TYPE_REPORT_TABLE = "reportTable";
-    public static final String TYPE_DATA_SET = "dataSet";
-    public static final String TYPE_PERIOD = "period";
-    public static final String TYPE_ORGANISATION_UNIT = "organisationUnit";
+//    public static final String TYPE_CHART = "chart";
+//    public static final String TYPE_MAP = "map";
+//    public static final String TYPE_REPORT_TABLE = "reportTable";
+//    public static final String TYPE_DATA_SET = "dataSet";
+//    public static final String TYPE_PERIOD = "period";
+//    public static final String TYPE_ORGANISATION_UNIT = "organisationUnit";
+
+
+    public static final String TYPE_CHART = "CHART";
+    public static final String TYPE_MAP = "MAP";
+    public static final String TYPE_REPORT_TABLE = "REPORT_TABLE";
+    public static final String TYPE_DATA_SET = "DATASET_REPORT";
+    public static final String TYPE_PERIOD = "PERIOD";
+    public static final String TYPE_ORGANISATION_UNIT = "ORGANISATION_UNIT";
+
 
     private String type;
 
