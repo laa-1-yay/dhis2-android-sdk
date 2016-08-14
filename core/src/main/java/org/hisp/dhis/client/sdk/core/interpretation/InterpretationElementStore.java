@@ -37,4 +37,6 @@ import java.util.List;
 public interface InterpretationElementStore extends
         IdentifiableObjectStore<InterpretationElement> {
     List<InterpretationElement> query(Interpretation interpretation);
+
+    InterpretationElement getInterpretationElement(long id);
 }
