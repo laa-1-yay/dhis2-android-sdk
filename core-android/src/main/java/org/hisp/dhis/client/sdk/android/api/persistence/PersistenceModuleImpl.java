@@ -37,6 +37,8 @@ import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardElementFlo
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardItemFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.EventFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.UserFlow;
 import org.hisp.dhis.client.sdk.android.common.StateStoreImpl;
 import org.hisp.dhis.client.sdk.android.dashboard.DashboardContentStoreImpl;
 import org.hisp.dhis.client.sdk.android.dashboard.DashboardElementStoreImpl;
@@ -44,6 +46,9 @@ import org.hisp.dhis.client.sdk.android.dashboard.DashboardItemStoreImpl;
 import org.hisp.dhis.client.sdk.android.dashboard.DashboardStoreImpl;
 import org.hisp.dhis.client.sdk.android.dataelement.DataElementStoreImpl;
 import org.hisp.dhis.client.sdk.android.event.EventStoreImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationCommentStoreImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationElementStoreImpl;
+import org.hisp.dhis.client.sdk.android.interpretation.InterpretationStoreImpl;
 import org.hisp.dhis.client.sdk.android.optionset.OptionSetStoreImpl;
 import org.hisp.dhis.client.sdk.android.optionset.OptionStoreImpl;
 import org.hisp.dhis.client.sdk.android.organisationunit.OrganisationUnitStoreImpl;
@@ -58,6 +63,7 @@ import org.hisp.dhis.client.sdk.android.program.ProgramStoreImpl;
 import org.hisp.dhis.client.sdk.android.trackedentity.TrackedEntityAttributeStoreImpl;
 import org.hisp.dhis.client.sdk.android.trackedentity.TrackedEntityDataValueStoreImpl;
 import org.hisp.dhis.client.sdk.android.user.UserAccountStoreImpl;
+import org.hisp.dhis.client.sdk.android.user.UserStoreImpl;
 import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.common.persistence.PersistenceModule;
 import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
@@ -67,6 +73,9 @@ import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemStore;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardStore;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementStore;
 import org.hisp.dhis.client.sdk.core.event.EventStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationStore;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetStore;
 import org.hisp.dhis.client.sdk.core.optionset.OptionStore;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitStore;
@@ -81,7 +90,11 @@ import org.hisp.dhis.client.sdk.core.program.ProgramStore;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeStore;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityDataValueStore;
 import org.hisp.dhis.client.sdk.core.user.UserAccountStore;
+import org.hisp.dhis.client.sdk.core.user.UserStore;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 
 public class PersistenceModuleImpl implements PersistenceModule {
     private final TransactionManager transactionManager;
@@ -101,8 +114,10 @@ public class PersistenceModuleImpl implements PersistenceModule {
     private final DashboardStore dashboardStore;
     private final DashboardElementStore dashboardElementStore;
     private final DashboardItemStore dashboardItemStore;
-
     private final DashboardContentStore dashboardContentStore;
+    private final InterpretationStore interpretationStore;
+    private final InterpretationElementStore interpretationElementStore;
+    private final InterpretationCommentStore interpretationCommentStore;
     private final TrackedEntityDataValueStore trackedEntityDataValueStore;
     private final DataElementStore dataElementStore;
     private final OptionStore optionStore;
@@ -113,7 +128,8 @@ public class PersistenceModuleImpl implements PersistenceModule {
 
         transactionManager = new TransactionManagerImpl();
         stateStore = new StateStoreImpl(EventFlow.MAPPER, DashboardFlow.MAPPER,
-                DashboardItemFlow.MAPPER, DashboardElementFlow.MAPPER, DashboardContentFlow.MAPPER);
+                DashboardItemFlow.MAPPER, DashboardElementFlow.MAPPER,
+                DashboardContentFlow.MAPPER, InterpretationFlow.MAPPER);
         programStore = new ProgramStoreImpl(transactionManager);
         programStageStore = new ProgramStageStoreImpl(transactionManager);
         programStageSectionStore = new ProgramStageSectionStoreImpl(transactionManager);
@@ -135,6 +151,10 @@ public class PersistenceModuleImpl implements PersistenceModule {
         dashboardStore = new DashboardStoreImpl(stateStore,dashboardItemStore,transactionManager);
         dashboardElementStore = new DashboardElementStoreImpl(stateStore);
         dashboardContentStore = new DashboardContentStoreImpl(stateStore);
+
+        interpretationStore = new InterpretationStoreImpl(stateStore);
+        interpretationElementStore = new InterpretationElementStoreImpl(stateStore);
+        interpretationCommentStore = new InterpretationCommentStoreImpl(stateStore);
 
         optionStore = new OptionStoreImpl();
         optionSetStore = new OptionSetStoreImpl();
@@ -230,6 +250,24 @@ public class PersistenceModuleImpl implements PersistenceModule {
         return dashboardContentStore;
     }
 
+
+    @Override
+    public InterpretationStore getInterpretationStore() {
+        return interpretationStore;
+    }
+
+
+    @Override
+    public InterpretationElementStore getInterpretationElementStore() {
+        return interpretationElementStore;
+    }
+
+
+    @Override
+    public InterpretationCommentStore getInterpretationCommentStore() {
+        return interpretationCommentStore;
+    }
+
     @Override
     public TrackedEntityDataValueStore getTrackedEntityDataValueStore() {
         return trackedEntityDataValueStore;
@@ -269,6 +307,9 @@ public class PersistenceModuleImpl implements PersistenceModule {
                 dashboardElementStore.deleteAll() &&
                 dashboardItemStore.deleteAll() &&
                 dashboardContentStore.deleteAll() &&
+                interpretationStore.deleteAll() &&
+                interpretationElementStore.deleteAll() &&
+                interpretationCommentStore.deleteAll() &&
                 trackedEntityDataValueStore.deleteAll() &&
                 dataElementStore.deleteAll() &&
                 optionStore.deleteAll() &&

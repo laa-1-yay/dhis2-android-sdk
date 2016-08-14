@@ -35,6 +35,9 @@ import org.hisp.dhis.client.sdk.core.dashboard.DashboardItemStore;
 import org.hisp.dhis.client.sdk.core.dashboard.DashboardStore;
 import org.hisp.dhis.client.sdk.core.dataelement.DataElementStore;
 import org.hisp.dhis.client.sdk.core.event.EventStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementStore;
+import org.hisp.dhis.client.sdk.core.interpretation.InterpretationStore;
 import org.hisp.dhis.client.sdk.core.optionset.OptionSetStore;
 import org.hisp.dhis.client.sdk.core.optionset.OptionStore;
 import org.hisp.dhis.client.sdk.core.organisationunit.OrganisationUnitStore;
@@ -49,6 +52,10 @@ import org.hisp.dhis.client.sdk.core.program.ProgramStore;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityAttributeStore;
 import org.hisp.dhis.client.sdk.core.trackedentity.TrackedEntityDataValueStore;
 import org.hisp.dhis.client.sdk.core.user.UserAccountStore;
+import org.hisp.dhis.client.sdk.core.user.UserStore;
+import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 
 public interface PersistenceModule {
 
@@ -87,6 +94,12 @@ public interface PersistenceModule {
     DashboardContentStore getDashboardContentStore();
 
     DashboardItemStore getDashboardItemStore();
+
+    InterpretationStore getInterpretationStore();
+
+    InterpretationElementStore getInterpretationElementStore();
+
+    InterpretationCommentStore getInterpretationCommentStore();
 
     TrackedEntityDataValueStore getTrackedEntityDataValueStore();
 
