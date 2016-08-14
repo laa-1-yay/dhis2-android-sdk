@@ -112,11 +112,11 @@ public class DashboardElementServiceImpl implements DashboardElementService {
     }
 
     @Override
-    public List<DashboardElement> list(DashboardItem dashboardItem) {
-        Preconditions.isNull(dashboardItem, "DashboardItem object must not be null");
+    public List<DashboardElement> list(String dashboardItemUId) {
+        Preconditions.isNull(dashboardItemUId, "DashboardItem object must not be null");
 
         List<DashboardElement> allDashboardElements = dashboardElementStore.query
-                (dashboardItem);
+                (dashboardItemUId);
         Map<Long, Action> actionMap = stateStore.queryActionsForModel(DashboardElement.class);
 
         List<DashboardElement> dashboardElements = new ArrayList<>();

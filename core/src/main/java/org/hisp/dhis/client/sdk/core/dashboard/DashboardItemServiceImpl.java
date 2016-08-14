@@ -98,7 +98,7 @@ public class DashboardItemServiceImpl implements DashboardItemService {
     public int countElements(DashboardItem dashboardItem) {
         Preconditions.isNull(dashboardItem, "DashboardItem object must not be null");
 
-        List<DashboardElement> dashboardElements = dashboardElementService.list(dashboardItem);
+        List<DashboardElement> dashboardElements = dashboardElementService.list(dashboardItem.getUId());
         return dashboardElements != null ? dashboardElements.size() : 0;
     }
 

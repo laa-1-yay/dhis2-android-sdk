@@ -76,11 +76,11 @@ public class DashboardElementInteractorImpl implements DashboardElementInteracto
     }
 
     @Override
-    public Observable<List<DashboardElement>> list(final DashboardItem dashboardItem) {
+    public Observable<List<DashboardElement>> list(final String dashboardItemUId) {
         return Observable.create(new DefaultOnSubscribe<List<DashboardElement>>() {
             @Override
             public List<DashboardElement> call() {
-                return mDashboardElementService.list(dashboardItem);
+                return mDashboardElementService.list(dashboardItemUId);
             }
         });
     }

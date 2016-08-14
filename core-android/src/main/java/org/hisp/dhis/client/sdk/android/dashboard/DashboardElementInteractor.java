@@ -46,7 +46,7 @@ public interface DashboardElementInteractor {
 
     Observable<List<DashboardElement>> list();
 
-    Observable<List<DashboardElement>> list(DashboardItem dashboardItem);
+    Observable<List<DashboardElement>> list(String dashboardItemUId);
 
     Observable<DashboardElement> get(long dashboardElementId);
 

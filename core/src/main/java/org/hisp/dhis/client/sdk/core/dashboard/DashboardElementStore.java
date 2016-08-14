@@ -38,5 +38,7 @@ import java.util.List;
 public interface DashboardElementStore extends Store<DashboardElement> {
     List<DashboardElement> query(DashboardItem dashboardItem);
 
+    List<DashboardElement> query(String dashboardItemUId);
+
     DashboardElement getDashboardElement(long dashboardElementId);
 }
