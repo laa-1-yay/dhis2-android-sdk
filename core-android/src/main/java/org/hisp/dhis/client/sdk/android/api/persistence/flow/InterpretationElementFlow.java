@@ -72,7 +72,8 @@ public final class InterpretationElementFlow extends BaseModelFlow {
     public InterpretationElementFlow() {
         // empty constructor
     }
-//
+
+//      TODO Remove unused old code
 //    public static InterpretationElement toModel(InterpretationElementFlow elementFlow) {
 //        if (elementFlow == null) {
 //            return null;
@@ -175,6 +176,8 @@ public final class InterpretationElementFlow extends BaseModelFlow {
             interpretationElementFlow.setName(interpretationElement.getName());
             interpretationElementFlow.setDisplayName(interpretationElement.getDisplayName());
             interpretationElementFlow.setType(interpretationElement.getType());
+            interpretationElementFlow.setInterpretation(InterpretationFlow.MAPPER
+                    .mapToDatabaseEntity(interpretationElement.getInterpretation()));
             return interpretationElementFlow;
         }
 
@@ -193,6 +196,8 @@ public final class InterpretationElementFlow extends BaseModelFlow {
             interpretationElement.setName(interpretationElementFlow.getName());
             interpretationElement.setDisplayName(interpretationElementFlow.getDisplayName());
             interpretationElement.setType(interpretationElementFlow.getType());
+            interpretationElement.setInterpretation(InterpretationFlow.MAPPER
+                    .mapToModel(interpretationElementFlow.getInterpretation()));
             return interpretationElement;
         }
 
