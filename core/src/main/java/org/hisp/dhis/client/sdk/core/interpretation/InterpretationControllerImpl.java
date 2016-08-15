@@ -298,29 +298,57 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     private void sendInterpretationCommentChanges() {
-        List<InterpretationComment> comments = null;
+
+        List<InterpretationComment> comments = stateStore.queryModelsWithActions
+                (InterpretationComment.class, Action.TO_POST, Action.TO_UPDATE, Action.TO_DELETE);
+
+        // List<InterpretationComment> comments = null;
         // mInterpretationCommentStore.query(Action.SYNCED);
 
         if (comments == null || comments.isEmpty()) {
             return;
         }
 
-        for (InterpretationComment comment : comments) {
-            /* switch (comment.getAction()) {
+        Map<Long, Action> actionMap = stateStore
+                .queryActionsForModel(InterpretationComment.class);
+
+        for (InterpretationComment interpretationComment : comments) {
+            Action action = actionMap.get(interpretationComment.getId());
+            action = action == null ? Action.SYNCED : action;
+
+            switch (action) {
                 case TO_POST: {
-                    postInterpretationComment(comment);
+                    postInterpretationComment(interpretationComment);
                     break;
                 }
                 case TO_UPDATE: {
-                    putInterpretationComment(comment);
+                    putInterpretationComment(interpretationComment);
                     break;
                 }
                 case TO_DELETE: {
-                    deleteInterpretationComment(comment);
+                    deleteInterpretationComment(interpretationComment);
                     break;
                 }
-            } */
+            }
         }
+
+        // TODO Remove Commented Old Code
+//        for (InterpretationComment comment : comments) {
+//            /* switch (comment.getAction()) {
+//                case TO_POST: {
+//                    postInterpretationComment(comment);
+//                    break;
+//                }
+//                case TO_UPDATE: {
+//                    putInterpretationComment(comment);
+//                    break;
+//                }
+//                case TO_DELETE: {
+//                    deleteInterpretationComment(comment);
+//                    break;
+//                }
+//            } */
+//        }
     }
 
     public void postInterpretationComment(InterpretationComment comment) {
