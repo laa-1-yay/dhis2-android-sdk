@@ -280,6 +280,14 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     public void deleteInterpretation(Interpretation interpretation) {
+
+        try {
+            interpretationApiClient.deleteInterpretation(interpretation.getUId());
+            mInterpretationStore.delete(interpretation);
+        } catch (ApiException apiException) {
+            handleApiException(apiException, interpretation);
+        }
+
         /* try {
             mDhisApi.deleteInterpretation(interpretation.getUId());
 
