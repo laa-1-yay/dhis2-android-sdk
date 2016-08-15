@@ -352,33 +352,61 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     public void postInterpretationComment(InterpretationComment comment) {
-        Interpretation interpretation = comment.getInterpretation();
 
-        /* if (interpretation != null && interpretation.getAction() != null) {
-            boolean isInterpretationSynced = (interpretation.getAction().equals(Action.SYNCED) ||
-                    interpretation.getAction().equals(Action.TO_UPDATE));
+        Interpretation interpretation = comment.getInterpretation();
+        Action interpretationAction = stateStore.queryActionForModel(interpretation);
+
+        if (interpretation != null && interpretationAction != null) {
+            boolean isInterpretationSynced = (interpretationAction.equals(Action.SYNCED) ||
+                    interpretationAction.equals(Action.TO_UPDATE));
 
             if (!isInterpretationSynced) {
                 return;
             }
 
             try {
-                Response response = mDhisApi.postInterpretationComment(
-                        interpretation.getUId(), new TypedString(comment.getText()));
 
-                Header locationHeader = findLocationHeader(response.getHeaders());
-                String commentUid = Uri.parse(locationHeader
-                        .getValue()).getLastPathSegment();
-                comment.setUId(commentUid);
-                comment.setAction(Action.SYNCED);
+                Response response = interpretationApiClient.postInterpretationComment(
+                        interpretation.getUId(), comment.getText());
 
                 mInterpretationStore.save(interpretation);
+                stateStore.saveActionForModel(comment, Action.SYNCED);
 
                 updateInterpretationCommentTimeStamp(comment);
-            } catch (APIException apiException) {
-                handleApiException(apiException, comment, mInterpretationCommentStore);
+
+            } catch (ApiException apiException) {
+                //handleApiException(apiException, comment);
             }
-        } */
+        }
+
+        // TODO Remove Commented Old Code
+//        Interpretation interpretation = comment.getInterpretation();
+//
+//        if (interpretation != null && interpretation.getAction() != null) {
+//            boolean isInterpretationSynced = (interpretation.getAction().equals(Action.SYNCED) ||
+//                    interpretation.getAction().equals(Action.TO_UPDATE));
+//
+//            if (!isInterpretationSynced) {
+//                return;
+//            }
+//
+//            try {
+//                Response response = mDhisApi.postInterpretationComment(
+//                        interpretation.getUId(), new TypedString(comment.getText()));
+//
+//                Header locationHeader = findLocationHeader(response.getHeaders());
+//                String commentUid = Uri.parse(locationHeader
+//                        .getValue()).getLastPathSegment();
+//                comment.setUId(commentUid);
+//                comment.setAction(Action.SYNCED);
+//
+//                mInterpretationStore.save(interpretation);
+//
+//                updateInterpretationCommentTimeStamp(comment);
+//            } catch (APIException apiException) {
+//                handleApiException(apiException, comment, mInterpretationCommentStore);
+//            }
+//        }
     }
 
     public void putInterpretationComment(InterpretationComment comment) {
