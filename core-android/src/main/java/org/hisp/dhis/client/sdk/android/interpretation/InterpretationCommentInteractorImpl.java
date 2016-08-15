@@ -68,6 +68,17 @@ public class InterpretationCommentInteractorImpl implements InterpretationCommen
     }
 
     @Override
+    public Observable<List<InterpretationComment>> list(final String interpretationUId) {
+        return Observable.create(new DefaultOnSubscribe<List<InterpretationComment>>() {
+            @Override
+            public List<InterpretationComment> call() {
+                return mInterpretationCommentService.list(interpretationUId);
+            }
+        });
+//        return null;
+    }
+
+    @Override
     public Observable<Boolean> save(final InterpretationComment object) {
         return Observable.create(new DefaultOnSubscribe<Boolean>() {
             @Override
@@ -87,5 +98,4 @@ public class InterpretationCommentInteractorImpl implements InterpretationCommen
 //        });
         return null;
     }
-
 }
