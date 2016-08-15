@@ -66,4 +66,85 @@ public class InterpretationInteractorImpl implements InterpretationInteractor {
             }
         });
     }
+
+    @Override
+    public Observable<Boolean> save(final Interpretation interpretation) {
+        return Observable.create(new DefaultOnSubscribe<Boolean>() {
+            @Override
+            public Boolean call() {
+                return interpretationService.save(interpretation);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Boolean> remove(final Interpretation interpretation) {
+        return Observable.create(new DefaultOnSubscribe<Boolean>() {
+            @Override
+            public Boolean call() {
+                return interpretationService.remove(interpretation);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Interpretation> get(final long id) {
+        return Observable.create(new DefaultOnSubscribe<Interpretation>() {
+            @Override
+            public Interpretation call() {
+                return interpretationService.get(id);
+            }
+        });
+    }
+
+    @Override
+    public Observable<Interpretation> get(final String uid) {
+        return Observable.create(new DefaultOnSubscribe<Interpretation>() {
+            @Override
+            public Interpretation call() {
+                return interpretationService.get(uid);
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Interpretation>> list() {
+        return Observable.create(new DefaultOnSubscribe<List<Interpretation>>() {
+            @Override
+            public List<Interpretation> call() {
+                return interpretationService.list();
+            }
+        });
+    }
+
+    @Override
+    public Observable<List<Interpretation>>pull() {
+        return pull(SyncStrategy.DEFAULT);
+    }
+
+    @Override
+    public Observable<List<Interpretation>> pull(final SyncStrategy syncStrategy) {
+        return Observable.create(new DefaultOnSubscribe<List<Interpretation>>() {
+            @Override
+            public List<Interpretation> call() {
+                interpretationController.pull(syncStrategy);
+                return interpretationService.list();
+            }
+        });
+    }
+
+    @Override
+    public Observable<Interpretation> create(final DashboardItem dashboardItem, final User user, final String text) {
+        return Observable.create(new DefaultOnSubscribe<Interpretation>() {
+            @Override
+            public Interpretation call() {
+                return interpretationService.create(dashboardItem, user, text);
+            }
+        });
+    }
+
+    @Override
+    public User getCurrentUserLocal() {
+        return interpretationController.getCurrentUserLocal();
+    }
 }
