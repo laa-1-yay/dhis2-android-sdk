@@ -32,45 +32,65 @@ import com.raizlabs.android.dbflow.sql.language.Select;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationCommentFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationCommentFlow_Table;
+import org.hisp.dhis.client.sdk.android.common.AbsDataStore;
+import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.interpretation.InterpretationCommentStore;
-import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
 
 import java.util.List;
 import java.util.Set;
 
-public class InterpretationCommentStoreImpl implements InterpretationCommentStore {
+import static org.hisp.dhis.client.sdk.utils.Preconditions.isNull;
+
+public final class InterpretationCommentStoreImpl extends AbsDataStore<InterpretationComment,
+        InterpretationCommentFlow> implements InterpretationCommentStore {
+
+    public InterpretationCommentStoreImpl(StateStore stateStore) {
+        super(InterpretationCommentFlow.MAPPER, stateStore);
+    }
 
     @Override
     public boolean insert(InterpretationComment object) {
-        InterpretationCommentFlow commentFlow = null;
-        //InterpretationComment_Flow.fromModel(object);
-        commentFlow.insert();
+//        InterpretationCommentFlow commentFlow = null;
+//        //InterpretationComment_Flow.fromModel(object);
+//        commentFlow.insert();
+//
+//        object.setId(commentFlow.getId());
+//        return true;
 
-        object.setId(commentFlow.getId());
-        return true;
+        boolean isSuccess = super.insert(object);
+        return isSuccess;
     }
 
     @Override
     public boolean update(InterpretationComment object) {
-        //InterpretationComment_Flow.fromModel(object).update();
-        return true;
+//        //InterpretationComment_Flow.fromModel(object).update();
+//        return true;
+
+        boolean isSuccess = super.update(object);
+        return isSuccess;
     }
 
     @Override
     public boolean save(InterpretationComment object) {
-        InterpretationCommentFlow commentFlow = null;
-        //InterpretationComment_Flow.fromModel(object);
-        commentFlow.save();
+//        InterpretationCommentFlow commentFlow = null;
+//        //InterpretationComment_Flow.fromModel(object);
+//        commentFlow.save();
+//
+//        object.setId(commentFlow.getId());
+//        return true;
 
-        object.setId(commentFlow.getId());
-        return true;
+        boolean isSuccess = super.save(object);
+        return isSuccess;
     }
 
     @Override
     public boolean delete(InterpretationComment object) {
-        //InterpretationComment_Flow.fromModel(object).delete();
-        return true;
+//        //InterpretationComment_Flow.fromModel(object).delete();
+//        return true;
+
+        boolean isSuccess = super.delete(object);
+        return isSuccess;
     }
 
     @Override
@@ -83,7 +103,10 @@ public class InterpretationCommentStoreImpl implements InterpretationCommentStor
         List<InterpretationCommentFlow> commentFlows = new Select()
                 .from(InterpretationCommentFlow.class)
                 .queryList();
-        return null;//InterpretationComment_Flow.toModels(commentFlows);
+//        return null;//InterpretationComment_Flow.toModels(commentFlows);
+
+        return getMapper().mapToModels(commentFlows);
+
     }
 
     @Override
@@ -92,7 +115,10 @@ public class InterpretationCommentStoreImpl implements InterpretationCommentStor
                 .from(InterpretationCommentFlow.class)
                 .where(InterpretationCommentFlow_Table.id.is(id))
                 .querySingle();
-        return null;//InterpretationComment_Flow.toModel(commentFlow);
+//        return null;//InterpretationComment_Flow.toModel(commentFlow);
+
+        return getMapper().mapToModel(commentFlow);
+
     }
 
     @Override
@@ -101,7 +127,10 @@ public class InterpretationCommentStoreImpl implements InterpretationCommentStor
                 .from(InterpretationCommentFlow.class)
                 .where(InterpretationCommentFlow_Table.uId.is(uid))
                 .querySingle();
-        return null;//InterpretationComment_Flow.toModel(commentFlow);
+//        return null;//InterpretationComment_Flow.toModel(commentFlow);
+
+        return getMapper().mapToModel(commentFlow);
+
     }
 
     @Override
@@ -114,30 +143,40 @@ public class InterpretationCommentStoreImpl implements InterpretationCommentStor
         return false;
     }
 
+    // TODO Decide btw
     @Override
-    public List<InterpretationComment> query(Interpretation interpretation) {
-        return null;
+    public List<InterpretationComment> query(String interpretationUId) {
+        isNull(interpretationUId, "interpretationUId  must not be null");
+        List<InterpretationCommentFlow> interpretationCommentFlows = new Select()
+                .from(InterpretationCommentFlow.class)
+                .where(InterpretationCommentFlow_Table.interpretation.is(interpretationUId))
+                .queryList();
+        return getMapper().mapToModels(interpretationCommentFlows);
+//        return null;
     }
 
-    /* @Override
-    public List<InterpretationComment> filter(Action action) {
-        List<InterpretationComment_Flow> commentFlows = new Select()
-                .from(InterpretationComment_Flow.class)
-                .where(Condition.column(InterpretationComment_Flow_Table
-                        .ACTION).isNot(action.toString()))
-                .queryList();
-        return InterpretationComment_Flow.toModels(commentFlows);
-    }
+    /**
+     @Override
+     public List<InterpretationComment> filter(Action action) {
+     List<InterpretationCommentFlow> commentFlows = new Select()
+     .from(InterpretationCommentFlow.class)
+     .where(InterpretationCommentFlow_Table.is(id))
+     .where(Condition.column(InterpretationCommentFlow_Table
+     .ACTION).isNot(action.toString()))
+     .queryList();
+     return InterpretationCommentFlow.toModels(commentFlows);
+     }
 
-    @Override
-    public List<InterpretationComment> filter(Interpretation interpretation, Action action) {
-        List<InterpretationComment_Flow> commentFlows = new Select()
-                .from(InterpretationComment_Flow.class)
-                .where(Condition.column(InterpretationComment_Flow_Table
-                        .INTERPRETATION_INTERPRETATION).is(interpretation.getId()))
-                .and(Condition.column(InterpretationComment_Flow_Table
-                        .ACTION).isNot(action.toString()))
-                .queryList();
-        return InterpretationComment_Flow.toModels(commentFlows);
-    } */
+     @Override
+     public List<InterpretationComment> filter(Interpretation interpretation, Action action) {
+     List<InterpretationCommentFlow> commentFlows = new Select()
+     .from(InterpretationCommentFlow.class)
+     .where(Condition.column(InterpretationCommentFlow_Table
+     .INTERPRETATION_INTERPRETATION).is(interpretation.getId()))
+     .and(Condition.column(InterpretationCommentFlow_Table
+     .ACTION).isNot(action.toString()))
+     .queryList();
+     return InterpretationCommentFlow.toModels(commentFlows);
+     }
+     **/
 }
