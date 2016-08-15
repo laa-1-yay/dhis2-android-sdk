@@ -28,13 +28,13 @@
 
 package org.hisp.dhis.client.sdk.android.interpretation;
 
+import org.hisp.dhis.client.sdk.core.common.network.Response;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 
 import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
-import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -61,7 +61,7 @@ public interface InterpretationApiClientRetrofit {
     @Headers("Content-Type: text/plain")
     @POST("interpretations/chart/{uid}")
     Call<Response> postChartInterpretation(@Path("uid") String elementUid,
-                                                     @Body String interpretationText);
+                                           @Body String interpretationText);
 
     @Headers("Content-Type: text/plain")
     @POST("interpretations/map/{uid}")
