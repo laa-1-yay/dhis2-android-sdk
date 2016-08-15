@@ -44,4 +44,21 @@ public interface InterpretationInteractor {
 
     Observable<List<Interpretation>> syncInterpretations(SyncStrategy syncStrategy);
 
+    Observable<Boolean> save(Interpretation interpretation);
+
+    Observable<Boolean> remove(Interpretation interpretation);
+
+    Observable<Interpretation> get(long id);
+
+    Observable<Interpretation> get(String uid);
+
+    Observable<List<Interpretation>> list();
+
+    Observable<List<Interpretation>> pull();
+
+    Observable<List<Interpretation>> pull(SyncStrategy syncStrategy);
+
+    Observable<Interpretation> create(DashboardItem dashboardItem, User user, String text);
+
+    User getCurrentUserLocal();
 }
