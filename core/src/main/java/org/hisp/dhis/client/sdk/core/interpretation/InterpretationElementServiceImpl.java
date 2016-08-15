@@ -28,16 +28,26 @@
 
 package org.hisp.dhis.client.sdk.core.interpretation;
 
+import org.hisp.dhis.client.sdk.core.common.StateStore;
+import org.hisp.dhis.client.sdk.models.common.state.Action;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardElement;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import org.hisp.dhis.client.sdk.utils.Preconditions;
 
-public class InterpretationElementServiceImpl implements InterpretationElementService {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
-    public InterpretationElementServiceImpl() {
-        // empty constructor
+public class InterpretationElementServiceImpl implements InterpretationElementService {
+    private final InterpretationElementStore mInterpretationElementStore;
+    private final StateStore mStateStore;
+
+    public InterpretationElementServiceImpl(InterpretationElementStore interpretationElementStore,
+                                            StateStore stateStore) {
+        mInterpretationElementStore = interpretationElementStore;
+        mStateStore = stateStore;
     }
 
     /**
@@ -76,5 +86,71 @@ public class InterpretationElementServiceImpl implements InterpretationElementSe
         interpretationElement.setType(mimeType);
         interpretationElement.setInterpretation(interpretation);
         return interpretationElement;
+    }
+
+
+    @Override
+    public List<InterpretationElement> list(Interpretation interpretation) {
+        Preconditions.isNull(interpretation, "Interpretation object must not be null");
+
+        List<InterpretationElement> allInterpretationElements = mInterpretationElementStore.query
+                (interpretation);
+        Map<Long, Action> actionMap = mStateStore.queryActionsForModel(InterpretationElement.class);
+
+        List<InterpretationElement> interpretationElements = new ArrayList<>();
+        for (InterpretationElement interpretationElement : allInterpretationElements) {
+            Action action = actionMap.get(interpretationElement.getId());
+
+            if (!Action.TO_DELETE.equals(action)) {
+                interpretationElements.add(interpretationElement);
+            }
+        }
+
+        return interpretationElements;
+    }
+
+    @Override
+    public boolean save(InterpretationElement object) {
+            Preconditions.isNull(object, "InterpretationElement object must not be null");
+
+            Action action = mStateStore.queryActionForModel(object);
+            if (action == null) {
+                boolean status = mInterpretationElementStore.save(object);
+
+                if (status) {
+                    status = mStateStore.saveActionForModel(object, Action.TO_POST);
+                }
+
+                return status;
+            }
+
+            boolean status = false;
+            switch (action) {
+                case TO_POST:
+                case TO_UPDATE: {
+                    status = mInterpretationElementStore.save(object);
+                    break;
+                }
+                case SYNCED: {
+                    status = mInterpretationElementStore.save(object);
+
+                    if (status) {
+                        status = mStateStore.saveActionForModel(object, Action.TO_UPDATE);
+                    }
+                    break;
+                }
+                case TO_DELETE: {
+                    status = false;
+                    break;
+                }
+
+            }
+
+            return status;
+        }
+
+    @Override
+    public InterpretationElement get(long id) {
+        return mInterpretationElementStore.getInterpretationElement(id);
     }
 }
