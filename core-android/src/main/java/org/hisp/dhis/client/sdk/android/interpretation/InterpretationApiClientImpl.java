@@ -92,4 +92,58 @@ public class InterpretationApiClientImpl implements InterpretationApiClient {
 
         return updatedInterpretations;
     }
+
+    @Override
+    @NonNull
+    public Interpretation getBaseInterpretationByUid(String interpretationUId) {
+        final Map<String, String> QUERY_PARAMS = new HashMap<>();
+        QUERY_PARAMS.put("fields", "[created,lastUpdated]");
+        return call(interpretationApiClientRetrofit.getInterpretation(interpretationUId, QUERY_PARAMS));
+    }
+
+    @Override
+    public Interpretation getInterpretation(String interpretationUId, Map<String, String> queryParams) {
+        return call(interpretationApiClientRetrofit.getInterpretation(interpretationUId, queryParams));
+    }
+
+    @Override
+    public Response putInterpretationText(String interpretationUid, String text) {
+        return call(interpretationApiClientRetrofit.putInterpretationText(interpretationUid, text));
+    }
+
+    @Override
+    public Response deleteInterpretation(String interpretationUId) {
+        return call(interpretationApiClientRetrofit.deleteInterpretation(interpretationUId));
+    }
+
+    @Override
+    public Response postInterpretationComment(String interpretationUId, String text) {
+        return call(interpretationApiClientRetrofit.postInterpretationComment(interpretationUId, text));
+    }
+
+    @Override
+    public Response putInterpretationComment(String interpretationUId, String interpretationCommentUId, String text) {
+        return call(interpretationApiClientRetrofit.putInterpretationComment(interpretationUId,
+                interpretationCommentUId, text));
+    }
+
+    @Override
+    public Response deleteInterpretationComment(String interpretationUId, String interpretationCommentUId) {
+        return call(interpretationApiClientRetrofit.deleteInterpretationComment(interpretationUId, interpretationCommentUId));
+    }
+
+    @Override
+    public Response postChartInterpretation(String uId, String text) {
+        return call(interpretationApiClientRetrofit.postChartInterpretation(uId, text));
+    }
+
+    @Override
+    public Response postMapInterpretation(String uId, String text) {
+        return call(interpretationApiClientRetrofit.postMapInterpretation(uId, text));
+    }
+
+    @Override
+    public Response postReportTableInterpretation(String uId, String text) {
+        return call(interpretationApiClientRetrofit.postReportTableInterpretation(uId, text));
+    }
 }
