@@ -98,4 +98,25 @@ public class InterpretationCommentInteractorImpl implements InterpretationCommen
 //        });
         return null;
     }
+
+    @Override
+    public Observable<InterpretationComment> get(final long interpretationCommentId) {
+//        return Observable.create(new DefaultOnSubscribe<InterpretationComment>() {
+//            @Override
+//            public InterpretationComment call() {
+//                return mInterpretationCommentService.get(interpretationCommentId);
+//            }
+//        });
+        return null;
+    }
+
+    @Override
+    public Observable<InterpretationComment> get(final String interpretationCommentUId) {
+        return Observable.create(new DefaultOnSubscribe<InterpretationComment>() {
+            @Override
+            public InterpretationComment call() {
+                return mInterpretationCommentService.get(interpretationCommentUId);
+            }
+        });
+    }
 }
