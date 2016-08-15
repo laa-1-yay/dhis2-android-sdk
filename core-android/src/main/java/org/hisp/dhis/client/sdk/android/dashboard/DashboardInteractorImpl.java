@@ -163,4 +163,14 @@ public class DashboardInteractorImpl implements DashboardInteractor {
             }
         });
     }
+
+    @Override
+    public Observable<Dashboard> create(final String dashboardName) {
+        return Observable.create(new DefaultOnSubscribe<Dashboard>() {
+            @Override
+            public Dashboard call() {
+                return dashboardService.create(dashboardName);
+            }
+        });
+    }
 }

@@ -63,4 +63,6 @@ public interface DashboardInteractor {
     Observable<Integer> countItems(Dashboard dashboard);
 
     Observable<Boolean> addContent(Dashboard dashboard, DashboardContent content);
+
+    Observable<Dashboard> create(String dashboardName);
 }
