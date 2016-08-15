@@ -410,7 +410,35 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     public void putInterpretationComment(InterpretationComment comment) {
+
         Interpretation interpretation = comment.getInterpretation();
+        Action interpretationAction = stateStore.queryActionForModel(interpretation);
+
+        if (interpretation != null && interpretationAction != null) {
+            boolean isInterpretationSynced = (interpretationAction.equals(Action.SYNCED) ||
+                    interpretationAction.equals(Action.TO_UPDATE));
+
+            if (!isInterpretationSynced) {
+                return;
+            }
+
+            try {
+
+                Response response = interpretationApiClient.putInterpretationComment(
+                        interpretation.getUId(), comment.getUId(), comment.getText());
+
+                mInterpretationStore.save(interpretation);
+                stateStore.saveActionForModel(comment, Action.SYNCED);
+
+                updateInterpretationCommentTimeStamp(comment);
+
+            } catch (ApiException apiException) {
+                //handleApiException(apiException, comment);
+            }
+        }
+
+        // TODO Remove Commented Old Code
+//        Interpretation interpretation = comment.getInterpretation();
 
         /* if (interpretation != null && interpretation.getAction() != null) {
             boolean isInterpretationSynced = (interpretation.getAction().equals(Action.SYNCED) ||
