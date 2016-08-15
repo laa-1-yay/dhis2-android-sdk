@@ -464,7 +464,39 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     public void deleteInterpretationComment(InterpretationComment comment) {
+
         Interpretation interpretation = comment.getInterpretation();
+        Action interpretationAction = stateStore.queryActionForModel(interpretation);
+
+        if (interpretation != null && interpretationAction != null) {
+            boolean isInterpretationSynced = (interpretationAction.equals(Action.SYNCED) ||
+                    interpretationAction.equals(Action.TO_UPDATE));
+
+            // 1) If Action of Interpretation is TO_DELETE,
+            //    there is no meaning to remove its comments by hand.
+            //    They will be removed automatically when interpretation is removed.
+            // 2) If Action of Interpretation is TO_POST,
+            //    we cannot create comment on server, since we don't have
+            //    interpretation UUID to associate comment with.
+            // In all other Action cases (TO_UPDATE, SYNCED), we can delete comments
+
+            if (!isInterpretationSynced) {
+                return;
+            }
+
+            try {
+                interpretationApiClient.deleteInterpretationComment(
+                        interpretation.getUId(), comment.getUId());
+                mInterpretationCommentStore.delete(comment);
+
+                updateInterpretationTimeStamp(comment.getInterpretation());
+            } catch (ApiException apiException) {
+                // handleApiException(apiException, comment);
+            }
+        }
+
+        // TODO Remove Commented Old Code
+        // Interpretation interpretation = comment.getInterpretation();
 
         /* if (interpretation != null && interpretation.getAction() != null) {
             boolean isInterpretationSynced = (interpretation.getAction().equals(Action.SYNCED) ||
