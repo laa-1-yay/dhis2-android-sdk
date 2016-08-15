@@ -47,6 +47,8 @@ public interface InterpretationElementInteractor {
 
     Observable<Boolean> remove(InterpretationElement object);
 
-    Observable<List<InterpretationElement>> list();
+    Observable<List<InterpretationElement>> list(Interpretation interpretation);
+
+    Observable<InterpretationElement> get(long interpretationElementId);
 
 }
