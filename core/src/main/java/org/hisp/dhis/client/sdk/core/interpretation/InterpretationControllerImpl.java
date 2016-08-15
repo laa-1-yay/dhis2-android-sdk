@@ -253,6 +253,19 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     public void putInterpretation(Interpretation interpretation) {
+
+        try {
+            interpretationApiClient.putInterpretationText(interpretation.getUId(),
+                    interpretation.getText());
+            // interpretation.setAction(Action.SYNCED);
+            mInterpretationStore.save(interpretation);
+            stateStore.saveActionForModel(interpretation, Action.SYNCED);
+
+            updateInterpretationTimeStamp(interpretation);
+        } catch (ApiException apiException) {
+            handleApiException(apiException, interpretation);
+        }
+
         /* try {
             mDhisApi.putInterpretationText(interpretation.getUId(),
                     new TypedString(interpretation.getText()));
