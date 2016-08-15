@@ -71,4 +71,24 @@ public class InterpretationComment extends BaseIdentifiableObject {
     public void setInterpretation(Interpretation interpretation) {
         this.interpretation = interpretation;
     }
+
+    /**
+     * Method modifies the original comment text and sets TO_UPDATE as state,
+     * if the object was received from server. If the model was persisted only locally,
+     * the State will be the TO_POST.
+     *
+     * @param newText Edited text of comment.
+     */
+    public final void updateComment(String newText) {
+        setText(newText);
+
+//        if (state != State.TO_DELETE && state != State.TO_POST) {
+//            state = State.TO_UPDATE;
+//        }
+//
+//        super.save();
+
+        // TODO Verify
+        // To be saved with interactor's save method
+    }
 }
