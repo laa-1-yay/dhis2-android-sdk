@@ -68,15 +68,35 @@ public class InterpretationElementInteractorImpl implements InterpretationElemen
         });
     }
 
+    @Override
+    public Observable<List<InterpretationElement>> list(final Interpretation interpretation) {
+        return Observable.create(new DefaultOnSubscribe<List<InterpretationElement>>() {
+            @Override
+            public List<InterpretationElement> call() {
+                return mInterpretationElementService.list(interpretation);
+            }
+        });
+//        return null;
+    }
 
     @Override
-    public Observable<List<InterpretationElement>> list() {
-//        return Observable.create(new DefaultOnSubscribe<List<InterpretationElement>>() {
+    public Observable<Boolean> remove(final InterpretationElement object) {
+//        return Observable.create(new DefaultOnSubscribe<Boolean>() {
 //            @Override
-//            public List<InterpretationElement> call() {
-//                return mInterpretationElementService.list();
+//            public Boolean call() {
+//                return mInterpretationElementService.remove(object);
 //            }
 //        });
         return null;
+    }
+
+    @Override
+    public Observable<InterpretationElement> get(final long interpretationElementId) {
+        return Observable.create(new DefaultOnSubscribe<InterpretationElement>() {
+            @Override
+            public InterpretationElement call() {
+                return mInterpretationElementService.get(interpretationElementId);
+            }
+        });
     }
 }
