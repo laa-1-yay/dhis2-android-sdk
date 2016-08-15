@@ -204,31 +204,36 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
 
     public void postInterpretation(Interpretation interpretation) throws ApiException {
         try {
+
             Response response;
 
             switch (interpretation.getType()) {
-                /* case Interpretation.TYPE_CHART: {
-                    response = mDhisApi.postChartInterpretation(
-                            interpretation.getChart().getUId(), new TypedString(interpretation
-                            .getText()));
+                case Interpretation.TYPE_CHART: {
+                    response = interpretationApiClient.postChartInterpretation(
+                            interpretation.getChart().getUId(),interpretation
+                                    .getText());
                     break;
                 }
                 case Interpretation.TYPE_MAP: {
-                    response = mDhisApi.postMapInterpretation(
-                            interpretation.getMap().getUId(), new TypedString(interpretation
-                            .getText()));
+                    response = interpretationApiClient.postMapInterpretation(
+                            interpretation.getMap().getUId(), interpretation
+                                    .getText());
                     break;
                 }
                 case Interpretation.TYPE_REPORT_TABLE: {
-                    response = mDhisApi.postReportTableInterpretation(
-                            interpretation.getReportTable().getUId(), new TypedString
-                            (interpretation.getText()));
+                    response = interpretationApiClient.postReportTableInterpretation(
+                            interpretation.getReportTable().getUId(),
+                            interpretation.getText());
                     break;
                 }
                 default:
                     throw new IllegalArgumentException("Unsupported interpretation type");
-                */
             }
+
+            mInterpretationStore.save(interpretation);
+            stateStore.saveActionForModel(interpretation, Action.SYNCED);
+
+            updateInterpretationTimeStamp(interpretation);
 
             /* Header header = NetworkUtils.findLocationHeader(response.getHeaders());
             String interpretationUid = Uri.parse(header
@@ -236,11 +241,12 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
             //  interpretation.setUId(interpretationUid);
             // interpretation.setAction(Action.SYNCED);
 
-            mInterpretationStore.save(interpretation);
+            //mInterpretationStore.save(interpretation);
 
-            updateInterpretationTimeStamp(interpretation);
+            //updateInterpretationTimeStamp(interpretation);
 
         } catch (ApiException apiException) {
+            handleApiException(apiException, interpretation);
             // ApiExceptionHandler.handleApiException(apiException, interpretation,
             // mInterpretationStore);
         }
