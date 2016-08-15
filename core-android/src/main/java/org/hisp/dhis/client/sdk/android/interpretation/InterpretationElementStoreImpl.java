@@ -30,9 +30,14 @@ package org.hisp.dhis.client.sdk.android.interpretation;
 
 import com.raizlabs.android.dbflow.sql.language.Select;
 
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardElementFlow;
+import org.hisp.dhis.client.sdk.android.api.persistence.flow.DashboardElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationElementFlow;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationElementFlow_Table;
 import org.hisp.dhis.client.sdk.android.api.persistence.flow.InterpretationFlow;
+import org.hisp.dhis.client.sdk.android.common.AbsDataStore;
+import org.hisp.dhis.client.sdk.android.common.AbsIdentifiableObjectDataStore;
+import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.interpretation.InterpretationElementStore;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
@@ -40,38 +45,57 @@ import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import java.util.List;
 import java.util.Set;
 
-public class InterpretationElementStoreImpl implements InterpretationElementStore {
+public final class InterpretationElementStoreImpl extends AbsDataStore<InterpretationElement,
+        InterpretationElementFlow> implements InterpretationElementStore {
+
+    public InterpretationElementStoreImpl(StateStore stateStore) {
+        super(InterpretationElementFlow.MAPPER, stateStore);
+    }
 
     @Override
     public boolean insert(InterpretationElement object) {
-        InterpretationElementFlow elementFlow =
-                InterpretationElementFlow.fromModel(object);
-        elementFlow.insert();
+//        InterpretationElementFlow elementFlow =
+//                InterpretationElementFlow.fromModel(object);
+//        elementFlow.insert();
+//
+//        object.setId(elementFlow.getId());
+//        return true;
 
-        object.setId(elementFlow.getId());
-        return true;
+
+        boolean isSuccess = super.insert(object);
+        return isSuccess;
     }
 
     @Override
     public boolean update(InterpretationElement object) {
-        InterpretationElementFlow.fromModel(object).update();
-        return true;
+//        InterpretationElementFlow.fromModel(object).update();
+//        return true;
+
+
+        boolean isSuccess = super.update(object);
+        return isSuccess;
     }
 
     @Override
     public boolean save(InterpretationElement object) {
-        InterpretationElementFlow elementFlow =
-                InterpretationElementFlow.fromModel(object);
-        elementFlow.save();
+//        InterpretationElementFlow elementFlow =
+//                InterpretationElementFlow.fromModel(object);
+//        elementFlow.save();
+//
+//        object.setId(elementFlow.getId());
+//        return true;
 
-        object.setId(elementFlow.getId());
-        return true;
+        boolean isSuccess = super.save(object);
+        return isSuccess;
     }
 
     @Override
     public boolean delete(InterpretationElement object) {
-        InterpretationElementFlow.fromModel(object).delete();
-        return true;
+//        InterpretationElementFlow.fromModel(object).delete();
+//        return true;
+
+        boolean isSuccess = super.delete(object);
+        return isSuccess;
     }
 
     @Override
@@ -84,7 +108,7 @@ public class InterpretationElementStoreImpl implements InterpretationElementStor
         List<InterpretationElementFlow> elementFlows = new Select()
                 .from(InterpretationElementFlow.class)
                 .queryList();
-        return InterpretationElementFlow.toModels(elementFlows);
+        return getMapper().mapToModels(elementFlows);
     }
 
     @Override
@@ -93,7 +117,7 @@ public class InterpretationElementStoreImpl implements InterpretationElementStor
                 .from(InterpretationElementFlow.class)
                 .where(InterpretationElementFlow_Table.id.is(id))
                 .querySingle();
-        return InterpretationElementFlow.toModel(elementFlow);
+        return getMapper().mapToModel(elementFlow);
     }
 
     @Override
@@ -102,7 +126,7 @@ public class InterpretationElementStoreImpl implements InterpretationElementStor
                 .from(InterpretationElementFlow.class)
                 .where(InterpretationElementFlow_Table.uId.is(uid))
                 .querySingle();
-        return InterpretationElementFlow.toModel(elementFlow);
+        return getMapper().mapToModel(elementFlow);
     }
 
     @Override
@@ -116,14 +140,23 @@ public class InterpretationElementStoreImpl implements InterpretationElementStor
     }
 
     @Override
-    public List<InterpretationElement> query(Interpretation interpretation) {
-        InterpretationFlow interpretationFlow = null;//Interpretation_Flow.fromModel
-        // (interpretation);
-        List<InterpretationElementFlow> elementFlow = new Select()
+    public List<InterpretationElement>
+    query(Interpretation interpretation) {
+
+        List<InterpretationElementFlow> elementFlows = new Select()
                 .from(InterpretationElementFlow.class)
                 .where(InterpretationElementFlow_Table
-                        .interpretation.is(interpretationFlow.getUId()))
+                        .interpretation.is(interpretation.getUId()))
                 .queryList();
-        return InterpretationElementFlow.toModels(elementFlow);
+        return getMapper().mapToModels(elementFlows);
+    }
+
+    @Override
+    public InterpretationElement getInterpretationElement(long id) {
+        InterpretationElementFlow interpretationElementFlow = new Select()
+                .from(InterpretationElementFlow.class)
+                .where(InterpretationElementFlow_Table.id.is(id))
+                .querySingle();
+        return getMapper().mapToModel(interpretationElementFlow);
     }
 }
