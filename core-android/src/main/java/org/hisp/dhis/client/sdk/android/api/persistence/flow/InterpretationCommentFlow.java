@@ -35,9 +35,15 @@ import com.raizlabs.android.dbflow.annotation.ForeignKeyReference;
 import com.raizlabs.android.dbflow.annotation.Table;
 
 import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
+import org.hisp.dhis.client.sdk.android.common.AbsMapper;
+import org.hisp.dhis.client.sdk.android.common.Mapper;
+import org.hisp.dhis.client.sdk.models.common.Access;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
+import org.hisp.dhis.client.sdk.models.user.User;
+import org.joda.time.DateTime;
 
 @Table(database = DbDhis.class)
-public final class InterpretationCommentFlow extends BaseIdentifiableObjectFlow {
+public final class InterpretationCommentFlow extends BaseModelFlow {
 
     @Column(name = "text")
     String text;
@@ -86,4 +92,74 @@ public final class InterpretationCommentFlow extends BaseIdentifiableObjectFlow 
     public void setInterpretation(InterpretationFlow interpretation) {
         this.interpretation = interpretation;
     }
+
+    public static final String COLUMN_UID = "uId";
+
+    @Column(name = COLUMN_UID)
+//    @Unique(unique = false)
+            String uId;
+
+    @Column(name = "name")
+    String name;
+
+    @Column(name = "displayName")
+    String displayName;
+
+    @Column(name = "created")
+    DateTime created;
+
+    @Column(name = "lastUpdated")
+    DateTime lastUpdated;
+
+    @Column(name = "access")
+    Access access;
+
+    public final String getUId() {
+        return uId;
+    }
+
+    public final void setUId(String uId) {
+        this.uId = uId;
+    }
+
+    public final String getName() {
+        return name;
+    }
+
+    public final void setName(String name) {
+        this.name = name;
+    }
+
+    public final String getDisplayName() {
+        return displayName;
+    }
+
+    public final void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public final DateTime getCreated() {
+        return created;
+    }
+
+    public final void setCreated(DateTime created) {
+        this.created = created;
+    }
+
+    public final DateTime getLastUpdated() {
+        return lastUpdated;
+    }
+
+    public final void setLastUpdated(DateTime lastUpdated) {
+        this.lastUpdated = lastUpdated;
+    }
+
+    public final Access getAccess() {
+        return access;
+    }
+
+    public final void setAccess(Access access) {
+        this.access = access;
+    }
+
 }
