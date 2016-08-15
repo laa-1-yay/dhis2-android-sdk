@@ -28,10 +28,12 @@
 
 package org.hisp.dhis.client.sdk.core.interpretation;
 
+import org.hisp.dhis.client.sdk.core.common.network.Response;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.joda.time.DateTime;
 
 import java.util.List;
+import java.util.Map;
 
 // TODO Remove unused methods
 public interface InterpretationApiClient {
@@ -41,4 +43,22 @@ public interface InterpretationApiClient {
     List<Interpretation> getInterpretations(DateTime lastUpdated);
 
     Interpretation getBaseInterpretationByUid(String interpretationUId);
+
+    Interpretation getInterpretation(String interpretationUId, Map<String, String> queryParams);
+
+    Response putInterpretationText(String interpretationUId, String text);
+
+    Response deleteInterpretation(String interpretationUId);
+
+    Response postInterpretationComment(String interpretationUId, String text);
+
+    Response putInterpretationComment(String interpretationUId, String interpretationCommentUId, String text);
+
+    Response deleteInterpretationComment(String interpretationUId, String interpretationCommentUId);
+
+    Response postChartInterpretation(String uId, String text);
+
+    Response postMapInterpretation(String uId, String text);
+
+    Response postReportTableInterpretation(String uId, String text);
 }
