@@ -30,31 +30,31 @@ package org.hisp.dhis.client.sdk.core.interpretation;
 
 import org.hisp.dhis.client.sdk.core.common.StateStore;
 import org.hisp.dhis.client.sdk.core.common.controllers.AbsDataController;
-import org.hisp.dhis.client.sdk.core.common.controllers.IdentifiableController;
 import org.hisp.dhis.client.sdk.core.common.controllers.SyncStrategy;
 import org.hisp.dhis.client.sdk.core.common.network.ApiException;
 import org.hisp.dhis.client.sdk.core.common.network.Response;
 import org.hisp.dhis.client.sdk.core.common.persistence.DbOperation;
 import org.hisp.dhis.client.sdk.core.common.persistence.DbOperationImpl;
 import org.hisp.dhis.client.sdk.core.common.persistence.DbUtils;
-import org.hisp.dhis.client.sdk.core.common.persistence.IdentifiableObjectStore;
 import org.hisp.dhis.client.sdk.core.common.persistence.TransactionManager;
 import org.hisp.dhis.client.sdk.core.common.preferences.DateType;
 import org.hisp.dhis.client.sdk.core.common.preferences.LastUpdatedPreferences;
 import org.hisp.dhis.client.sdk.core.common.preferences.ResourceType;
 import org.hisp.dhis.client.sdk.core.common.utils.ModelUtils;
 import org.hisp.dhis.client.sdk.core.systeminfo.SystemInfoController;
-import org.hisp.dhis.client.sdk.core.user.UserAccountService;
 import org.hisp.dhis.client.sdk.core.user.UserAccountStore;
 import org.hisp.dhis.client.sdk.core.user.UserApiClient;
 import org.hisp.dhis.client.sdk.core.user.UserStore;
 import org.hisp.dhis.client.sdk.models.common.state.Action;
+import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
+import org.hisp.dhis.client.sdk.models.dashboard.DashboardElement;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import org.hisp.dhis.client.sdk.models.user.User;
 import org.hisp.dhis.client.sdk.models.user.UserAccount;
 import org.hisp.dhis.client.sdk.utils.Logger;
+import org.hisp.dhis.client.sdk.utils.Preconditions;
 import org.joda.time.DateTime;
 
 import java.util.ArrayList;
@@ -672,7 +672,6 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         lastUpdatedPreferences.save(ResourceType.DASHBOARDS, DateType.SERVER, serverTime);
     }
 
-    // TODO Remove this
     private void getInterpretationDataFromServerOld() throws ApiException {
         /* DateTime lastUpdated = DateTimeManager.getInstance()
                 .getLastUpdated(ResourceType.INTERPRETATIONS);
@@ -783,8 +782,6 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
 //                interpretation.setComments(queryInterpretationComments(interpretation));
 //            }
 //        }
-//
-//        return null;
 
         List<Interpretation> persistedInterpretations = stateStore.queryModelsWithActions(Interpretation.class,
                 Action.SYNCED, Action.TO_UPDATE, Action.TO_DELETE);
