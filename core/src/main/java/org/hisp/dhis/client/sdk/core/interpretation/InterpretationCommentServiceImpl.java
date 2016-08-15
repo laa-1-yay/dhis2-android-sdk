@@ -34,9 +34,14 @@ import org.hisp.dhis.client.sdk.models.common.Access;
 import org.hisp.dhis.client.sdk.models.common.state.Action;
 import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationComment;
+import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import org.hisp.dhis.client.sdk.models.user.User;
 import org.hisp.dhis.client.sdk.utils.Preconditions;
 import org.joda.time.DateTime;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class InterpretationCommentServiceImpl implements InterpretationCommentService {
     private final InterpretationCommentStore interpretationCommentStore;
@@ -146,4 +151,39 @@ public class InterpretationCommentServiceImpl implements InterpretationCommentSe
 
         return status;
     }
+
+    @Override
+    public List<InterpretationComment> list(String interpretationUId) {
+        Preconditions.isNull(interpretationUId, "interpretationUId object must not be null");
+
+        List<InterpretationComment> allInterpretationComments = interpretationCommentStore.query
+                (interpretationUId);
+        Map<Long, Action> actionMap = stateStore.queryActionsForModel(InterpretationComment.class);
+
+        List<InterpretationComment> interpretationComments = new ArrayList<>();
+        for (InterpretationComment interpretationComment : allInterpretationComments) {
+            Action action = actionMap.get(interpretationComment.getId());
+
+            if (!Action.TO_DELETE.equals(action)) {
+                interpretationComments.add(interpretationComment);
+            }
+        }
+
+        return interpretationComments;
+    }
+
+    @Override
+    public InterpretationComment get(String uid) {
+        InterpretationComment interpretationComment = interpretationCommentStore.queryByUid(uid);
+
+        if (interpretationComment != null) {
+            Action action = stateStore.queryActionForModel(interpretationComment);
+
+            if (!Action.TO_DELETE.equals(action)) {
+                return interpretationComment;
+            }
+        }
+        return null;
+    }
+
 }
