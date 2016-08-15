@@ -101,6 +101,8 @@ public interface PersistenceModule {
 
     InterpretationCommentStore getInterpretationCommentStore();
 
+    UserStore getUserStore();
+
     TrackedEntityDataValueStore getTrackedEntityDataValueStore();
 
     DataElementStore getDataElementStore();

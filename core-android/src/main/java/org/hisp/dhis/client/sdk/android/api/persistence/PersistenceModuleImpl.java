@@ -118,6 +118,7 @@ public class PersistenceModuleImpl implements PersistenceModule {
     private final InterpretationStore interpretationStore;
     private final InterpretationElementStore interpretationElementStore;
     private final InterpretationCommentStore interpretationCommentStore;
+    private final UserStore userStore;
     private final TrackedEntityDataValueStore trackedEntityDataValueStore;
     private final DataElementStore dataElementStore;
     private final OptionStore optionStore;
@@ -155,6 +156,8 @@ public class PersistenceModuleImpl implements PersistenceModule {
         interpretationStore = new InterpretationStoreImpl(stateStore);
         interpretationElementStore = new InterpretationElementStoreImpl(stateStore);
         interpretationCommentStore = new InterpretationCommentStoreImpl(stateStore);
+
+        userStore = new UserStoreImpl(UserFlow.MAPPER);
 
         optionStore = new OptionStoreImpl();
         optionSetStore = new OptionSetStoreImpl();
@@ -269,6 +272,11 @@ public class PersistenceModuleImpl implements PersistenceModule {
     }
 
     @Override
+    public UserStore getUserStore() {
+        return userStore;
+    }
+
+    @Override
     public TrackedEntityDataValueStore getTrackedEntityDataValueStore() {
         return trackedEntityDataValueStore;
     }
@@ -310,6 +318,7 @@ public class PersistenceModuleImpl implements PersistenceModule {
                 interpretationStore.deleteAll() &&
                 interpretationElementStore.deleteAll() &&
                 interpretationCommentStore.deleteAll() &&
+                userStore.deleteAll() &&
                 trackedEntityDataValueStore.deleteAll() &&
                 dataElementStore.deleteAll() &&
                 optionStore.deleteAll() &&
