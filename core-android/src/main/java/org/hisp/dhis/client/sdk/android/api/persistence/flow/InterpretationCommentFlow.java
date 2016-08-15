@@ -44,6 +44,8 @@ import org.joda.time.DateTime;
 
 @Table(database = DbDhis.class)
 public final class InterpretationCommentFlow extends BaseModelFlow {
+    public static final Mapper<InterpretationComment, InterpretationCommentFlow> MAPPER =
+            new InterpretationCommentMapper();
 
     @Column(name = "text")
     String text;
@@ -162,4 +164,63 @@ public final class InterpretationCommentFlow extends BaseModelFlow {
         this.access = access;
     }
 
+
+
+    private static class InterpretationCommentMapper
+            extends AbsMapper<InterpretationComment, InterpretationCommentFlow> {
+
+        @Override
+        public InterpretationCommentFlow mapToDatabaseEntity(InterpretationComment interpretationComment) {
+            if (interpretationComment == null) {
+                return null;
+            }
+
+            InterpretationCommentFlow interpretationCommentFlow = new InterpretationCommentFlow();
+            interpretationCommentFlow.setId(interpretationComment.getId());
+            interpretationCommentFlow.setUId(interpretationComment.getUId());
+            interpretationCommentFlow.setCreated(interpretationComment.getCreated());
+            interpretationCommentFlow.setLastUpdated(interpretationComment.getLastUpdated());
+            interpretationCommentFlow.setAccess(interpretationComment.getAccess());
+            interpretationCommentFlow.setName(interpretationComment.getName());
+            interpretationCommentFlow.setDisplayName(interpretationComment.getDisplayName());
+            interpretationCommentFlow.setText(interpretationComment.getText());
+            interpretationCommentFlow.setInterpretation(InterpretationFlow.MAPPER
+                    .mapToDatabaseEntity(interpretationComment.getInterpretation()));
+            interpretationCommentFlow.setUser(UserFlow.MAPPER
+                    .mapToDatabaseEntity(interpretationComment.getUser()));
+            return interpretationCommentFlow;
+        }
+
+        @Override
+        public InterpretationComment mapToModel(InterpretationCommentFlow interpretationCommentFlow) {
+            if (interpretationCommentFlow == null) {
+                return null;
+            }
+
+            InterpretationComment interpretationComment = new InterpretationComment();
+            interpretationComment.setId(interpretationCommentFlow.getId());
+            interpretationComment.setUId(interpretationCommentFlow.getUId());
+            interpretationComment.setCreated(interpretationCommentFlow.getCreated());
+            interpretationComment.setLastUpdated(interpretationCommentFlow.getLastUpdated());
+            interpretationComment.setAccess(interpretationCommentFlow.getAccess());
+            interpretationComment.setName(interpretationCommentFlow.getName());
+            interpretationComment.setDisplayName(interpretationCommentFlow.getDisplayName());
+            interpretationComment.setText(interpretationCommentFlow.getText());
+            interpretationComment.setInterpretation(InterpretationFlow.MAPPER
+                    .mapToModel(interpretationCommentFlow.getInterpretation()));
+            interpretationComment.setUser(UserFlow.MAPPER
+                    .mapToModel(interpretationCommentFlow.getUser()));
+            return interpretationComment;
+        }
+
+        @Override
+        public Class<InterpretationComment> getModelTypeClass() {
+            return InterpretationComment.class;
+        }
+
+        @Override
+        public Class<InterpretationCommentFlow> getDatabaseEntityTypeClass() {
+            return InterpretationCommentFlow.class;
+        }
+    }
 }
