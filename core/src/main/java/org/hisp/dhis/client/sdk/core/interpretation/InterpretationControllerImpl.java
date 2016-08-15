@@ -571,6 +571,40 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
     }
 
     private void updateInterpretationCommentTimeStamp(InterpretationComment comment) {
+
+        try {
+            // after posting comment, timestamp both of interpretation and comment will change.
+            // we have to reflect these changes here in order not to break data integrity during
+            // next synchronizations to server.
+            Map<String, String> queryParams = new HashMap<>();
+            queryParams.put("fields", "created,lastUpdated,comments[id,created,lastUpdated]");
+            Interpretation persistedInterpretation = comment.getInterpretation();
+            Interpretation updatedInterpretation = interpretationApiClient
+                    .getInterpretation(persistedInterpretation.getUId(), queryParams);
+
+            // first, update timestamp of interpretation
+            persistedInterpretation.setCreated(updatedInterpretation.getCreated());
+            persistedInterpretation.setLastUpdated(updatedInterpretation.getLastUpdated());
+
+            mInterpretationStore.save(persistedInterpretation);
+
+            // second, find comment which we have added recently and update its timestamp
+            Map<String, InterpretationComment> updatedComments
+                    = ModelUtils.toMap(updatedInterpretation.getComments());
+            if (updatedComments.containsKey(comment.getUId())) {
+                InterpretationComment updatedComment = updatedComments.get(comment.getUId());
+
+                // set timestamp here
+                comment.setCreated(updatedComment.getCreated());
+                comment.setLastUpdated(updatedComment.getLastUpdated());
+
+                mInterpretationCommentStore.save(comment);
+            }
+        } catch (ApiException apiException) {
+            //handleApiException(apiException);
+        }
+
+        // TODO Remove Commented Old Code
         /* try {
             // after posting comment, timestamp both of interpretation and comment will change.
             // we have to reflect these changes here in order not to break data integrity during
