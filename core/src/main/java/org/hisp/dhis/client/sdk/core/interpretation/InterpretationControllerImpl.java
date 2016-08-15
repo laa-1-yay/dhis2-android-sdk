@@ -669,7 +669,7 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
                         .TO_UPDATE, Action.TO_DELETE), comments));
 
         transactionManager.transact(dbOperations);
-        lastUpdatedPreferences.save(ResourceType.DASHBOARDS, DateType.SERVER, serverTime);
+        lastUpdatedPreferences.save(ResourceType.INTERPRETATIONS, DateType.SERVER, serverTime);
     }
 
     private void getInterpretationDataFromServerOld() throws ApiException {
