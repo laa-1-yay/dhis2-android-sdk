@@ -47,4 +47,10 @@ public interface InterpretationCommentInteractor {
 
     Observable<List<InterpretationComment>> list();
 
+    Observable<List<InterpretationComment>> list(String interpretationUId);
+
+    Observable<InterpretationComment> get(long InterpretationCommentId);
+
+    Observable<InterpretationComment> get(String InterpretationCommentUId);
+
 }
