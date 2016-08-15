@@ -136,8 +136,13 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         sendInterpretationCommentChanges();
     }
 
+    // TODO check replacement for commented out code
     private void sendInterpretationChanges() throws ApiException {
-        List<Interpretation> interpretations = null;
+
+        List<Interpretation> interpretations = stateStore.queryModelsWithActions(Interpretation.class,
+                Action.TO_POST, Action.TO_UPDATE, Action.TO_DELETE);
+
+        // List<Interpretation> interpretations = null;
         // mInterpretationStore.filter(Action.SYNCED);
 
         if (interpretations == null || interpretations.isEmpty()) {
@@ -145,13 +150,24 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
         }
 
         for (Interpretation interpretation : interpretations) {
+            List<InterpretationElement> elements =
+                    mInterpretationElementStore.query(interpretation);
+            interpretation.setInterpretationElements(elements);
+
             /* List<InterpretationElement> elements =
                     mInterpretationElementStore.list(interpretation);
             mInterpretationService.setInterpretationElements(interpretation, elements); */
         }
 
-        /* for (Interpretation interpretation : interpretations) {
-            switch (interpretation.getAction()) {
+
+        Map<Long, Action> actionMap = stateStore
+                .queryActionsForModel(Interpretation.class);
+
+        for (Interpretation interpretation : interpretations) {
+            Action action = actionMap.get(interpretation.getId());
+            action = action == null ? Action.SYNCED : action;
+
+            switch (action) {
                 case TO_POST: {
                     postInterpretation(interpretation);
                     break;
@@ -165,7 +181,25 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
                     break;
                 }
             }
-        } */
+        }
+
+        // TODO Remove Commented Old Code
+//        for (Interpretation interpretation : interpretations) {
+//            switch (interpretation.getAction()) {
+//                case TO_POST: {
+//                    postInterpretation(interpretation);
+//                    break;
+//                }
+//                case TO_UPDATE: {
+//                    putInterpretation(interpretation);
+//                    break;
+//                }
+//                case TO_DELETE: {
+//                    deleteInterpretation(interpretation);
+//                    break;
+//                }
+//            }
+//        }
     }
 
     public void postInterpretation(Interpretation interpretation) throws ApiException {
