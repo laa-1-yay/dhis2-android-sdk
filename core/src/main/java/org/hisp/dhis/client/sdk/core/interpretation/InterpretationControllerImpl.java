@@ -533,6 +533,26 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
      * @param interpretation Interpretation to update.
      */
     private void updateInterpretationTimeStamp(Interpretation interpretation) {
+
+        try {
+            final Map<String, String> QUERY_PARAMS = new HashMap<>();
+            QUERY_PARAMS.put("fields", "[created,lastUpdated]");
+
+            Interpretation updatedInterpretation =
+                    interpretationApiClient.getBaseInterpretationByUid(interpretation.getUId());
+            //Interpretation updatedInterpretation = interpretationApiClient
+            //        .getInterpretation(interpretation.getUId(), QUERY_PARAMS);
+
+            // merging updated timestamp to local interpretation model
+            interpretation.setCreated(updatedInterpretation.getCreated());
+            interpretation.setLastUpdated(updatedInterpretation.getLastUpdated());
+
+            mInterpretationStore.save(interpretation);
+        } catch (ApiException apiException) {
+            handleApiException(apiException, interpretation);
+        }
+
+        // TODO Remove Commented Old Code
         /* try {
             final Map<String, String> QUERY_PARAMS = new HashMap<>();
             QUERY_PARAMS.put("fields", "[created,lastUpdated]");
