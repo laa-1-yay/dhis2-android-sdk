@@ -136,14 +136,6 @@ public final class ServicesModuleImpl implements ServicesModule {
                 persistenceModule.getEventStore(),
                 persistenceModule.getStateStore());
 
-        dashboardService = new DashboardServiceImpl(
-                persistenceModule.getDashboardStore(),
-                persistenceModule.getDashboardItemStore(),
-                persistenceModule.getDashboardElementStore(),
-                persistenceModule.getStateStore(),
-                getDashboardItemService(),
-                getDashboardElementService());
-
         dashboardElementService = new DashboardElementServiceImpl(
                 persistenceModule.getStateStore(),
                 persistenceModule.getDashboardElementStore(),
@@ -154,17 +146,25 @@ public final class ServicesModuleImpl implements ServicesModule {
                 persistenceModule.getStateStore(),
                 getDashboardElementService());
 
+        dashboardService = new DashboardServiceImpl(
+                persistenceModule.getDashboardStore(),
+                persistenceModule.getDashboardItemStore(),
+                persistenceModule.getDashboardElementStore(),
+                persistenceModule.getStateStore(),
+                getDashboardItemService(),
+                getDashboardElementService());
+
         dashboardContentService = new DashboardContentServiceImpl(
                 persistenceModule.getDashboardContentStore());
+
+        interpretationElementService = new InterpretationElementServiceImpl(
+                persistenceModule.getInterpretationElementStore(),
+                persistenceModule.getStateStore());
 
         interpretationService = new InterpretationServiceImpl(
                 persistenceModule.getInterpretationStore(),
                 persistenceModule.getStateStore(),
                 getInterpretationElementService());
-
-        interpretationElementService = new InterpretationElementServiceImpl(
-                persistenceModule.getInterpretationElementStore(),
-                persistenceModule.getStateStore());
 
         interpretationCommentService = new InterpretationCommentServiceImpl(
                 persistenceModule.getInterpretationCommentStore(),
