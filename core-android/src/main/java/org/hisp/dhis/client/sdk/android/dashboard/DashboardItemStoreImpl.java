@@ -54,13 +54,12 @@ public class DashboardItemStoreImpl extends AbsIdentifiableObjectDataStore<Dashb
     public List<DashboardItem> query(Dashboard dashboard) {
         isNull(dashboard, "Dashboard must not be null");
 
-//        List<DashboardItem_Flow> dashboardItemFlows = new Select()
-//                .from(DashboardItem_Flow.class)
-//                .where(DashboardItem_Flow_Table.dashboard.is(dashboard.getId()))
-//                .queryList();
-//
-//        return getMapper().mapToModels(dashboardItemFlows);
-        return null;
+        List<DashboardItemFlow> dashboardItemFlows = new Select()
+                .from(DashboardItemFlow.class)
+                .where(DashboardItemFlow_Table.dashboard.is(dashboard.getUId()))
+                .queryList();
+
+        return getMapper().mapToModels(dashboardItemFlows);
     }
 
     @Override
