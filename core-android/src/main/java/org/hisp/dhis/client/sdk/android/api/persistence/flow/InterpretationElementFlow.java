@@ -39,12 +39,8 @@ import org.hisp.dhis.client.sdk.android.api.persistence.DbDhis;
 import org.hisp.dhis.client.sdk.android.common.AbsMapper;
 import org.hisp.dhis.client.sdk.android.common.Mapper;
 import org.hisp.dhis.client.sdk.models.common.Access;
-import org.hisp.dhis.client.sdk.models.interpretation.Interpretation;
 import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import org.joda.time.DateTime;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>
@@ -72,75 +68,6 @@ public final class InterpretationElementFlow extends BaseModelFlow {
     public InterpretationElementFlow() {
         // empty constructor
     }
-
-//      TODO Remove unused old code
-//    public static InterpretationElement toModel(InterpretationElementFlow elementFlow) {
-//        if (elementFlow == null) {
-//            return null;
-//        }
-//
-//        InterpretationElement element = new InterpretationElement();
-//        element.setId(elementFlow.getId());
-//        element.setUId(elementFlow.getUId());
-//        element.setCreated(elementFlow.getCreated());
-//        element.setLastUpdated(elementFlow.getLastUpdated());
-//        element.setName(elementFlow.getName());
-//        element.setDisplayName(elementFlow.getDisplayName());
-//        element.setAccess(elementFlow.getAccess());
-//        element.setType(elementFlow.getType());
-//        element.setInterpretation(InterpretationFlow.MAPPER
-//                .mapToModel(elementFlow.getInterpretation()));
-//        //element.setInterpretation(Interpretation_Flow
-//        //        .toModel(elementFlow.getInterpretation()));
-//        return element;
-//    }
-//
-//    public static InterpretationElementFlow fromModel(InterpretationElement element) {
-//        if (element == null) {
-//            return null;
-//        }
-//
-//        InterpretationElementFlow elementFlow = new InterpretationElementFlow();
-//        elementFlow.setId(element.getId());
-//        elementFlow.setUId(element.getUId());
-//        elementFlow.setCreated(element.getCreated());
-//        elementFlow.setLastUpdated(element.getLastUpdated());
-//        elementFlow.setName(element.getName());
-//        elementFlow.setDisplayName(element.getDisplayName());
-//        elementFlow.setAccess(element.getAccess());
-//        elementFlow.setType(element.getType());
-//        elementFlow.setInterpretation(InterpretationFlow.MAPPER
-//                .mapToDatabaseEntity(element.getInterpretation()));
-//        //elementFlow.setInterpretation(Interpretation_Flow
-//        //        .fromModel(element.getInterpretation()));
-//        return elementFlow;
-//    }
-//
-//    public static List<InterpretationElement> toModels(
-//            List<InterpretationElementFlow> elementFlows) {
-//        List<InterpretationElement> elements = new ArrayList<>();
-//
-//        if (elementFlows != null && !elementFlows.isEmpty()) {
-//            for (InterpretationElementFlow elementFlow : elementFlows) {
-//                elements.add(InterpretationElementFlow.toModel(elementFlow));
-//            }
-//        }
-//
-//        return elements;
-//    }
-//
-//    public static List<InterpretationElementFlow> fromModels(
-//            List<InterpretationElement> elements) {
-//        List<InterpretationElementFlow> elementFlows = new ArrayList<>();
-//
-//        if (elements != null && !elements.isEmpty()) {
-//            for (InterpretationElement element : elements) {
-//                elementFlows.add(InterpretationElementFlow.fromModel(element));
-//            }
-//        }
-//
-//        return elementFlows;
-//    }
 
     public String getType() {
         return type;

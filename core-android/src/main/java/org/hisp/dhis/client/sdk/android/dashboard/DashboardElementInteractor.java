@@ -28,7 +28,6 @@
 
 package org.hisp.dhis.client.sdk.android.dashboard;
 
-import org.hisp.dhis.client.sdk.models.dashboard.Dashboard;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardContent;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardElement;
 import org.hisp.dhis.client.sdk.models.dashboard.DashboardItem;

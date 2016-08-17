@@ -98,12 +98,6 @@ public final class InterpretationStoreImpl extends AbsIdentifiableObjectDataStor
         return isSuccess;
     }
 
-    // TODO
-    @Override
-    public boolean deleteAll() {
-        return false;
-    }
-
     @Override
     public List<Interpretation> queryAll() {
         List<InterpretationFlow> interpretationFlows = new Select()
