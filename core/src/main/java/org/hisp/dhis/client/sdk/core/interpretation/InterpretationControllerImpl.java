@@ -859,7 +859,7 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
                 User user = interpretation.getUser();
 
                 // Add extra check to avoid corrupted data
-                if(user.getName()!=null) {
+                if(user!=null && user.getName()!=null) {
                     if (users.containsKey(user.getUId())) {
                         user = users.get(user.getUId());
                         interpretation.setUser(user);
@@ -875,7 +875,7 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
                 User user = comment.getUser();
 
                 // Add extra check to avoid corrupted data
-                if(user.getName()!=null) {
+                if(user!=null && user.getName()!=null) {
                     if (users.containsKey(user.getUId())) {
                         user = users.get(user.getUId());
                         comment.setUser(user);
