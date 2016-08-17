@@ -45,7 +45,6 @@ import java.util.Map;
 import static org.hisp.dhis.client.sdk.android.api.network.NetworkUtils.call;
 import static org.hisp.dhis.client.sdk.android.api.network.NetworkUtils.unwrap;
 
-// TODO Remove Unused methods
 public class InterpretationApiClientImpl implements InterpretationApiClient {
     private final InterpretationApiClientRetrofit interpretationApiClientRetrofit;
 

@@ -123,7 +123,6 @@ public class InterpretationServiceImpl implements InterpretationService {
                 Action.SYNCED, Action.TO_POST, Action.TO_UPDATE);
     }
 
-    // TODO check if implementation is correct
     @Override
     public Interpretation get(long id) {
         Interpretation interpretation = interpretationStore.queryById(id);
@@ -138,7 +137,6 @@ public class InterpretationServiceImpl implements InterpretationService {
         return null;
     }
 
-    // TODO check if implementation is correct
     @Override
     public Interpretation get(String uid) {
         Interpretation interpretation = interpretationStore.queryByUid(uid);

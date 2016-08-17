@@ -35,7 +35,6 @@ import org.joda.time.DateTime;
 import java.util.List;
 import java.util.Map;
 
-// TODO Remove unused methods
 public interface InterpretationApiClient {
 
     List<Interpretation> getInterpretationUids();

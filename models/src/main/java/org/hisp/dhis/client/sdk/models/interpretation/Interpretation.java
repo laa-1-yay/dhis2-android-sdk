@@ -264,7 +264,6 @@ public class Interpretation extends BaseIdentifiableObject {
 //
 //        super.save();
 
-        // TODO Verify
         // To be saved with interactor's save method
     }
 

@@ -37,7 +37,6 @@ import org.hisp.dhis.client.sdk.models.user.User;
 import java.util.List;
 import rx.Observable;
 
-// TODO remove unused
 public class InterpretationCommentInteractorImpl implements InterpretationCommentInteractor {
     private final InterpretationCommentService mInterpretationCommentService;
 

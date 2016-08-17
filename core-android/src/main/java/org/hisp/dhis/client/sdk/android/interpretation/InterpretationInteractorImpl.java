@@ -40,7 +40,6 @@ import java.util.List;
 
 import rx.Observable;
 
-// TODO Remove Unused methods
 public class InterpretationInteractorImpl implements InterpretationInteractor {
     private final InterpretationService interpretationService;
     private final InterpretationController interpretationController;

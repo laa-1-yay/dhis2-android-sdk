@@ -72,7 +72,7 @@ public final class Dashboard extends BaseIdentifiableObject {
     public void updateDashboard(String newName) {
         setName(newName);
         setDisplayName(newName);
-        // TODO Verify
+
         // To be saved with interactor's save method
     }
 }

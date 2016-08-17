@@ -150,7 +150,6 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
         logger.d("testactualDashboards", actualDashboards.toString());
 
         // List of updated dashboards with content.
-        // TODO
         List<Dashboard> updatedDashboards = dashboardApiClient.getDashboards(lastUpdated);
         logger.d("testupdatedDashboards", updatedDashboards.toString());
 
@@ -272,7 +271,7 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
 
     }
 
-    // TODO Remove this if unused
+    // TODO Remove this
     private void getDashboardDataFromServerLegacy() {
         DateTime lastUpdated = lastUpdatedPreferences.get(ResourceType.DASHBOARDS, DateType.SERVER);
         DateTime serverTime = systemInfoController.getSystemInfo().getServerDate();
@@ -303,7 +302,6 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
         logger.d("testactualDashboards", actualDashboards.toString());
 
         // List of updated dashboards with content.
-        // TODO
         List<Dashboard> updatedDashboards = dashboardApiClient.getDashboards(lastUpdated);
         logger.d("testupdatedDashboards", updatedDashboards.toString());
 

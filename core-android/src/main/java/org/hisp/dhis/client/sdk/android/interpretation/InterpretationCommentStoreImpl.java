@@ -143,7 +143,6 @@ public final class InterpretationCommentStoreImpl extends AbsDataStore<Interpret
         return false;
     }
 
-    // TODO Decide btw
     @Override
     public List<InterpretationComment> query(String interpretationUId) {
         isNull(interpretationUId, "interpretationUId  must not be null");
@@ -152,7 +151,6 @@ public final class InterpretationCommentStoreImpl extends AbsDataStore<Interpret
                 .where(InterpretationCommentFlow_Table.interpretation.is(interpretationUId))
                 .queryList();
         return getMapper().mapToModels(interpretationCommentFlows);
-//        return null;
     }
 
     /**

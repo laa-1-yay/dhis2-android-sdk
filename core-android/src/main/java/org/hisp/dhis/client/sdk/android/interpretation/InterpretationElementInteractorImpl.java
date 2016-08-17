@@ -37,7 +37,6 @@ import org.hisp.dhis.client.sdk.models.interpretation.InterpretationElement;
 import java.util.List;
 import rx.Observable;
 
-// TODO remove unused
 public class InterpretationElementInteractorImpl implements InterpretationElementInteractor {
     private final InterpretationElementService mInterpretationElementService;
 
