@@ -678,7 +678,8 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
                 // dashboardItem.getType(), element.getUId(), "");
 
                 // instead, post element
-                Response response = dashboardApiClient.postDashboardItem(dashboardItem);
+                Response response = dashboardApiClient.postDashboardItem(dashboard.getUId(),
+                        dashboardItem.getUId(), element.getUId());
 
                 // Header locationHeader = findLocationHeader(response.getHeaders());
 
