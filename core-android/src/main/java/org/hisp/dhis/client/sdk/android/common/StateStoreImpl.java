@@ -242,7 +242,7 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
         if (Dashboard.class.equals(clazz)) {
             List<DashboardFlow> dashboardFlows = (List<DashboardFlow>) queryModels(clazz, uids,
                     DashboardFlow_Table.id.withTable(), withAction, actions);
-            if(dashboardFlows!=null && !dashboardFlows.isEmpty()){
+            if(dashboardFlows!=null){
                 return (List<T>) dashboardMapper.mapToModels(dashboardFlows);
             }else{
                 return new ArrayList<>();
@@ -252,7 +252,7 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
         if (DashboardItem.class.equals(clazz)) {
             List<DashboardItemFlow> dashboardItemFlows = (List<DashboardItemFlow>) queryModels(clazz, null,
                     DashboardItemFlow_Table.id.withTable(), withAction, actions);
-            if(dashboardItemFlows!=null && !dashboardItemFlows.isEmpty()){
+            if(dashboardItemFlows!=null){
                 return (List<T>) dashboardItemMapper.mapToModels(dashboardItemFlows);
             }else{
                 return new ArrayList<>();
@@ -262,7 +262,7 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
         if (DashboardElement.class.equals(clazz)) {
             List<DashboardElementFlow> dashboardElementFlows = (List<DashboardElementFlow>) queryModels(clazz, null,
                     DashboardElementFlow_Table.id.withTable(), withAction, actions);
-            if(dashboardElementFlows!=null && !dashboardElementFlows.isEmpty()){
+            if(dashboardElementFlows!=null){
                 return (List<T>) dashboardElementMapper.mapToModels(dashboardElementFlows);
             }else{
                 return new ArrayList<>();
@@ -272,7 +272,7 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
         if (DashboardContent.class.equals(clazz)) {
             List<DashboardContentFlow> dashboardContentFlows = (List<DashboardContentFlow>) queryModels(clazz, null,
                     DashboardContentFlow_Table.id.withTable(), withAction, actions);
-            if(dashboardContentFlows!=null && !dashboardContentFlows.isEmpty()){
+            if(dashboardContentFlows!=null){
                 return (List<T>) dashboardContentMapper.mapToModels(dashboardContentFlows);
             }else{
                 return new ArrayList<>();
@@ -282,7 +282,7 @@ public class StateStoreImpl extends AbsStore<State, StateFlow> implements StateS
         if (Interpretation.class.equals(clazz)) {
             List<InterpretationFlow> interpretationFlows = (List<InterpretationFlow>) queryModels(clazz, null,
                     InterpretationFlow_Table.id.withTable(), withAction, actions);
-            if(interpretationFlows!=null && !interpretationFlows.isEmpty()){
+            if(interpretationFlows!=null){
                 return (List<T>) interpretationMapper.mapToModels(interpretationFlows);
             }else{
                 return new ArrayList<>();

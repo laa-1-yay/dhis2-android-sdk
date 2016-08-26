@@ -670,9 +670,8 @@ public final class InterpretationControllerImpl extends AbsDataController<Interp
 
         transactionManager.transact(dbOperations);
         lastUpdatedPreferences.save(ResourceType.INTERPRETATIONS, DateType.SERVER, serverTime);
-    }
 
-    private void getInterpretationDataFromServerOld() throws ApiException {
+        // TODO Remove this (Old Code)
         /* DateTime lastUpdated = DateTimeManager.getInstance()
                 .getLastUpdated(ResourceType.INTERPRETATIONS);
         DateTime serverTime = mDhisApi.getSystemInfo().getServerDate();
