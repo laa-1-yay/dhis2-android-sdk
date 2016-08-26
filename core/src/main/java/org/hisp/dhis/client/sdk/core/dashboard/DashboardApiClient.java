@@ -57,7 +57,7 @@ public interface DashboardApiClient {
 
     Response postDashboard(Dashboard dashboard);
 
-    Response postDashboardItem(DashboardItem dashboardItem);
+    Response postDashboardItem(String dashboardUId, String itemUId, String elementUId);
 
     Response putDashboard(Dashboard dashboard);
 
@@ -84,4 +84,5 @@ public interface DashboardApiClient {
     List<DashboardContent> getBaseResources(Map<String, String> queryParams);
 
     ResponseBody getReportTableDataByUid(String uid);
+
 }

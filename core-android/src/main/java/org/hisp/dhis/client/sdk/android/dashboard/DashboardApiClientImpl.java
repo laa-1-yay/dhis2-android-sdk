@@ -146,9 +146,8 @@ public class DashboardApiClientImpl implements DashboardApiClient {
     }
 
     @Override
-    @NonNull
-    public Response postDashboardItem(DashboardItem dashboardItem) {
-        return null;
+    public Response postDashboardItem(String dashboardUId, String itemUId, String elementUId) {
+        return call(dashboardApiClientRetrofit.postDashboardItem(dashboardUId, itemUId, elementUId, ""));
     }
 
     @Override
