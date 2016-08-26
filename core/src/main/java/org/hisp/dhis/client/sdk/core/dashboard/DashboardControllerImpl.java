@@ -768,7 +768,54 @@ public final class DashboardControllerImpl extends AbsDataController<Dashboard> 
 
     private void postDashboardElement(DashboardElement element) {
         DashboardItem item = element.getDashboardItem();
-        /* if (item == null || item.getAction() == null) {
+
+        Action itemAction = stateStore.queryActionForModel(item);
+
+        if (item == null || itemAction == null) {
+            return;
+        }
+
+        Dashboard dashboard = item.getDashboard();
+        Action dashboardAction = stateStore.queryActionForModel(dashboard);
+        if (dashboard == null || dashboardAction == null) {
+            return;
+        }
+
+
+        // we need to make sure associated DashboardItem
+        // and parent Dashboard are already synced to server
+        boolean isDashboardSynced = (dashboardAction.equals(Action.SYNCED) ||
+                dashboardAction.equals(Action.TO_UPDATE));
+        boolean isItemSynced = dashboardAction.equals(Action.SYNCED) ||
+                dashboardAction.equals(Action.TO_UPDATE);
+        if (isDashboardSynced && isItemSynced) {
+            try {
+                /* dhisApi.deleteDashboardItemContent(dashboard.getUId(),
+                        item.getUId(), element.getUId()); */
+                /* dashboardApiClient.deleteDashboardItemContent(dashboard.getUId(),
+                        item.getUId(), element.getUId()); */
+                dashboardApiClient.postDashboardItem(dashboard.getUId(),
+                        item.getUId(), element.getUId());
+                dashboardElementStore.save(element);
+
+                stateStore.saveActionForModel(element, Action.SYNCED);
+
+                updateDashboardTimeStamp(dashboard);
+                // removal of elements changes
+                // dashboard's timestamp on server. In order to stay in pull,
+                // we need to get dashboard from server.
+                updateDashboardTimeStamp(item.getDashboard());
+            } catch (ApiException apiException) {
+                // handleApiException(apiException, element, dashboardElementStore);
+            }
+        }
+
+
+        // TODO Remove Old Code
+        /*
+         DashboardItem item = element.getDashboardItem();
+
+         if (item == null || item.getAction() == null) {
             return;
         }
 
